@@ -1,0 +1,207 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
+import StepIndicator from "./StepIndicator";
+import { Info } from "lucide-react";
+
+const ICPForm = () => {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState({
+    // Step 1
+    landingPageGoal: "",
+    targetCustomer: "",
+    // Step 2
+    painPoint: "",
+    valueProposition: "",
+    // Step 3
+    currentSolution: "",
+    decisionFactors: ""
+  });
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleNext = () => {
+    if (currentStep < 3) {
+      setCurrentStep(prev => prev + 1);
+    } else {
+      // Final step - process form
+      console.log("Final form data:", formData);
+    }
+  };
+
+  const handleBack = () => {
+    if (currentStep > 1) {
+      setCurrentStep(prev => prev - 1);
+    }
+  };
+
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <div className="space-y-6">
+            <div>
+              <Label htmlFor="landingPageGoal" className="text-sm font-medium text-foreground mb-2 block">
+                What's the main goal of this landing page?
+              </Label>
+              <Input
+                id="landingPageGoal"
+                placeholder="e.g. Collect waitlist, Book demo,..."
+                value={formData.landingPageGoal}
+                onChange={(e) => handleInputChange("landingPageGoal", e.target.value)}
+                className="w-full"
+              />
+              <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+                <Info className="w-3 h-3" />
+                <span>Helps us evaluate success based on the right outcome.</span>
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="targetCustomer" className="text-sm font-medium text-foreground mb-2 block">
+                Who is your target customer?
+              </Label>
+              <Input
+                id="targetCustomer"
+                placeholder="e.g Startup founder, B2B SaaS team,..."
+                value={formData.targetCustomer}
+                onChange={(e) => handleInputChange("targetCustomer", e.target.value)}
+                className="w-full"
+              />
+              <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+                <Info className="w-3 h-3" />
+                <span>Ensures our insights match your intended audience.</span>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 2:
+        return (
+          <div className="space-y-6">
+            <div>
+              <Label htmlFor="painPoint" className="text-sm font-medium text-foreground mb-2 block">
+                What problem or pain point are they facing?
+              </Label>
+              <Textarea
+                id="painPoint"
+                placeholder="e.g. Wasting hours filtering candidates, Manual onboarding,..."
+                value={formData.painPoint}
+                onChange={(e) => handleInputChange("painPoint", e.target.value)}
+                className="w-full min-h-[100px]"
+              />
+              <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+                <Info className="w-3 h-3" />
+                <span>Makes sure the page clearly addresses their pain point.</span>
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="valueProposition" className="text-sm font-medium text-foreground mb-2 block">
+                What makes your product different or valuable to this audience?
+              </Label>
+              <Textarea
+                id="valueProposition"
+                placeholder="e.g. AI filters candidates instantly, No-code setup in 5 mins,..."
+                value={formData.valueProposition}
+                onChange={(e) => handleInputChange("valueProposition", e.target.value)}
+                className="w-full min-h-[100px]"
+              />
+              <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+                <Info className="w-3 h-3" />
+                <span>Check if your page clearly communicates your unique value.</span>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 3:
+        return (
+          <div className="space-y-6">
+            <div>
+              <Label htmlFor="currentSolution" className="text-sm font-medium text-foreground mb-2 block">
+                How are they currently solving this problem?
+              </Label>
+              <Textarea
+                id="currentSolution"
+                placeholder="e.g. Manual processes, Spreadsheets, Competitor tools,..."
+                value={formData.currentSolution}
+                onChange={(e) => handleInputChange("currentSolution", e.target.value)}
+                className="w-full min-h-[100px]"
+              />
+              <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+                <Info className="w-3 h-3" />
+                <span>Helps position your solution against current alternatives.</span>
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="decisionFactors" className="text-sm font-medium text-foreground mb-2 block">
+                What factors influence their buying decision?
+              </Label>
+              <Textarea
+                id="decisionFactors"
+                placeholder="e.g. Cost savings, Time efficiency, Team size, Security,..."
+                value={formData.decisionFactors}
+                onChange={(e) => handleInputChange("decisionFactors", e.target.value)}
+                className="w-full min-h-[100px]"
+              />
+              <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+                <Info className="w-3 h-3" />
+                <span>Ensures your page addresses key decision criteria.</span>
+              </div>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <Card className="w-full max-w-2xl shadow-lg">
+        <CardContent className="p-8">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-semibold text-foreground mb-2">
+              Help us understand your ICP so we can give better insights
+            </h1>
+          </div>
+
+          <StepIndicator currentStep={currentStep} totalSteps={3} />
+
+          {renderStepContent()}
+
+          <div className="flex gap-4 mt-8">
+            {currentStep > 1 && (
+              <Button
+                onClick={handleBack}
+                variant="secondary"
+                className="flex-1 h-12 text-base font-medium"
+              >
+                Back
+              </Button>
+            )}
+            <Button
+              onClick={handleNext}
+              className={`h-12 text-base font-medium ${currentStep === 1 ? 'w-full' : 'flex-1'}`}
+            >
+              {currentStep === 3 ? 'Complete' : 'Next'}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default ICPForm;
