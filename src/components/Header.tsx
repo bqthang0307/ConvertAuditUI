@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChevronDown, Plus, Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
+import logo from "@/assets/logo.png";
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
@@ -10,14 +11,10 @@ const Header = () => {
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-card border-b border-border">
       <div className="flex items-center gap-2">
-        <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-          <div className="w-5 h-5 bg-primary-foreground rounded-full flex items-center justify-center">
-            <div className="w-3 h-3 border-2 border-primary rounded-full"></div>
-          </div>
-        </div>
-        <span className="text-xl font-semibold text-foreground">ConvertAudit</span>
+        <img src={logo} alt="ConvertAudit" className="w-10 h-10 object-contain" />
+        <span className="text-[17px] font-semibold text-foreground leading-[100%] tracking-[0.02em] align-middle" style={{ fontFamily: 'Axiforma, sans-serif' }}>ConvertAudit</span>
       </div>
-      
+
       <nav className="flex items-center gap-6">
         <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
           History
@@ -30,8 +27,8 @@ const Header = () => {
             9
           </Badge>
         </div>
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           size="icon"
           onClick={() => setTheme(theme === "light" ? "dark" : "light")}
           className="w-9 h-9"
@@ -40,8 +37,13 @@ const Header = () => {
           <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
         </Button>
-        <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-          <Plus className="w-4 h-4 mr-2" />
+                <Button 
+          variant="gradient" 
+          className="font-axiforma text-figma-17 align-middle hover:cursor-pointer"
+        >
+          <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center mr-2">
+            <Plus className="w-4 h-4" />
+          </div>
           Create New
         </Button>
         <div className="flex items-center gap-2">

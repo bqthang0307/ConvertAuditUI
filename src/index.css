@@ -44,6 +44,14 @@
   --color-sidebar-accent-foreground: hsl(240 5.9% 10%);
   --color-sidebar-border: hsl(220 13% 91%);
   --color-sidebar-ring: hsl(217.2 91.2% 59.8%);
+  
+  --gradient-primary: linear-gradient(180deg, #2762FC 0%, #86A9FE 126.29%);
+}
+
+/* Custom button gradient */
+.btn-gradient {
+  background: var(--gradient-primary);
+  color: white !important;
 }
 
 /* Base resets that lean on your tokens */

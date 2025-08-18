@@ -130,35 +130,18 @@ const ICPForm = () => {
           <div className="space-y-6">
             <div>
               <Label htmlFor="currentSolution" className="text-sm font-medium text-foreground mb-2 block">
-                How are they currently solving this problem?
+                Anything else we should know before auditing? (Optional)
               </Label>
               <Textarea
                 id="currentSolution"
-                placeholder="e.g. Manual processes, Spreadsheets, Competitor tools,..."
+                placeholder="Tell us more..."
                 value={formData.currentSolution}
                 onChange={(e) => handleInputChange("currentSolution", e.target.value)}
                 className="w-full min-h-[100px]"
               />
               <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
                 <Info className="w-3 h-3" />
-                <span>Helps position your solution against current alternatives.</span>
-              </div>
-            </div>
-
-            <div>
-              <Label htmlFor="decisionFactors" className="text-sm font-medium text-foreground mb-2 block">
-                What factors influence their buying decision?
-              </Label>
-              <Textarea
-                id="decisionFactors"
-                placeholder="e.g. Cost savings, Time efficiency, Team size, Security,..."
-                value={formData.decisionFactors}
-                onChange={(e) => handleInputChange("decisionFactors", e.target.value)}
-                className="w-full min-h-[100px]"
-              />
-              <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
-                <Info className="w-3 h-3" />
-                <span>Ensures your page addresses key decision criteria.</span>
+                <span>Adds extra context that may affect the audit.</span>
               </div>
             </div>
           </div>
@@ -174,7 +157,7 @@ const ICPForm = () => {
       <Card className="w-full max-w-2xl shadow-lg">
         <CardContent className="p-8">
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-semibold text-foreground mb-2">
+            <h1 className="text-2xl font-bold text-foreground mb-2 font-sans leading-8 tracking-normal">
               Help us understand your ICP so we can give better insights
             </h1>
           </div>
@@ -188,16 +171,16 @@ const ICPForm = () => {
               <Button
                 onClick={handleBack}
                 variant="secondary"
-                className="flex-1 h-12 text-base font-medium"
+                className="flex-1 h-12 text-base font-medium hover:cursor-pointer"
               >
                 Back
               </Button>
             )}
             <Button
               onClick={handleNext}
-              className={`h-12 text-base font-medium ${currentStep === 1 ? 'w-full' : 'flex-1'}`}
+              className={`h-12 text-base font-medium hover:cursor-pointer ${currentStep === 1 ? 'w-full' : 'flex-1'}`}
             >
-              {currentStep === 3 ? 'Complete' : 'Next'}
+              {currentStep === 3 ? 'Submit' : 'Next'}
             </Button>
           </div>
         </CardContent>
