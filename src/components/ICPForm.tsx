@@ -22,20 +22,53 @@ const ICPForm = () => {
     currentSolution: "",
     decisionFactors: ""
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }));
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: ""
+      }));
+    }
+  };
+
+  const validateStep = (step: number) => {
+    const newErrors: Record<string, string> = {};
+    
+    if (step === 1) {
+      if (!formData.landingPageGoal.trim()) {
+        newErrors.landingPageGoal = "Landing page goal is required";
+      }
+      if (!formData.targetCustomer.trim()) {
+        newErrors.targetCustomer = "Target customer is required";
+      }
+    } else if (step === 2) {
+      if (!formData.painPoint.trim()) {
+        newErrors.painPoint = "Pain point is required";
+      }
+      if (!formData.valueProposition.trim()) {
+        newErrors.valueProposition = "Value proposition is required";
+      }
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleNext = () => {
-    if (currentStep < 3) {
-      setCurrentStep(prev => prev + 1);
-    } else {
-      // Navigate to audit page
-      navigate('/audit');
+    if (validateStep(currentStep)) {
+      if (currentStep < 3) {
+        setCurrentStep(prev => prev + 1);
+      } else {
+        // Navigate to audit page
+        navigate('/audit');
+      }
     }
   };
 
@@ -54,13 +87,16 @@ const ICPForm = () => {
               <Label htmlFor="landingPageGoal" className="text-sm font-medium text-foreground mb-2 block">
                 What's the main goal of this landing page?
               </Label>
-              <Input
+              <Textarea
                 id="landingPageGoal"
                 placeholder="e.g. Collect waitlist, Book demo,..."
                 value={formData.landingPageGoal}
                 onChange={(e) => handleInputChange("landingPageGoal", e.target.value)}
-                className="w-full"
+                className={`w-full ${errors.landingPageGoal ? 'border-destructive' : ''}`}
               />
+              {errors.landingPageGoal && (
+                <p className="text-sm text-destructive mt-1">{errors.landingPageGoal}</p>
+              )}
               <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
                 <Info className="w-3 h-3" />
                 <span>Helps us evaluate success based on the right outcome.</span>
@@ -71,13 +107,16 @@ const ICPForm = () => {
               <Label htmlFor="targetCustomer" className="text-sm font-medium text-foreground mb-2 block">
                 Who is your target customer?
               </Label>
-              <Input
+              <Textarea
                 id="targetCustomer"
                 placeholder="e.g Startup founder, B2B SaaS team,..."
                 value={formData.targetCustomer}
                 onChange={(e) => handleInputChange("targetCustomer", e.target.value)}
-                className="w-full"
+                className={`w-full ${errors.targetCustomer ? 'border-destructive' : ''}`}
               />
+              {errors.targetCustomer && (
+                <p className="text-sm text-destructive mt-1">{errors.targetCustomer}</p>
+              )}
               <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
                 <Info className="w-3 h-3" />
                 <span>Ensures our insights match your intended audience.</span>
@@ -98,8 +137,11 @@ const ICPForm = () => {
                 placeholder="e.g. Wasting hours filtering candidates, Manual onboarding,..."
                 value={formData.painPoint}
                 onChange={(e) => handleInputChange("painPoint", e.target.value)}
-                className="w-full min-h-[100px]"
+                className={`w-full min-h-[100px] ${errors.painPoint ? 'border-destructive' : ''}`}
               />
+              {errors.painPoint && (
+                <p className="text-sm text-destructive mt-1">{errors.painPoint}</p>
+              )}
               <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
                 <Info className="w-3 h-3" />
                 <span>Makes sure the page clearly addresses their pain point.</span>
@@ -115,8 +157,11 @@ const ICPForm = () => {
                 placeholder="e.g. AI filters candidates instantly, No-code setup in 5 mins,..."
                 value={formData.valueProposition}
                 onChange={(e) => handleInputChange("valueProposition", e.target.value)}
-                className="w-full min-h-[100px]"
+                className={`w-full min-h-[100px] ${errors.valueProposition ? 'border-destructive' : ''}`}
               />
+              {errors.valueProposition && (
+                <p className="text-sm text-destructive mt-1">{errors.valueProposition}</p>
+              )}
               <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
                 <Info className="w-3 h-3" />
                 <span>Check if your page clearly communicates your unique value.</span>
