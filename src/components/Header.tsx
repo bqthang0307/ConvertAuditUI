@@ -2,11 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChevronDown, Plus, Sun, Moon } from "lucide-react";
-import { useTheme } from "next-themes";
+// import { useTheme } from "next-themes";
 import logo from "@/assets/logo.png";
 
 const Header = () => {
-  const { theme, setTheme } = useTheme();
+  // const { theme, setTheme } = useTheme();
 
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-card border-b border-border">
@@ -27,7 +27,7 @@ const Header = () => {
             9
           </Badge>
         </div>
-        <Button
+        {/* <Button
           variant="outline"
           size="icon"
           onClick={() => setTheme(theme === "light" ? "dark" : "light")}
@@ -36,9 +36,9 @@ const Header = () => {
           <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
-        </Button>
-                <Button 
-          variant="gradient" 
+        </Button> */}
+        <Button
+          variant="gradient"
           className="font-axiforma text-figma-17 align-middle hover:cursor-pointer"
         >
           <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center mr-2">

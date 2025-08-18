@@ -178,6 +178,7 @@ const ICPForm = () => {
             )}
             <Button
               onClick={handleNext}
+              variant="gradient"
               className={`h-12 text-base font-medium hover:cursor-pointer ${currentStep === 1 ? 'w-full' : 'flex-1'}`}
             >
               {currentStep === 3 ? 'Submit' : 'Next'}
