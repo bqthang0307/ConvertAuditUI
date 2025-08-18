@@ -6,8 +6,10 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import StepIndicator from "./StepIndicator";
 import { Info } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const ICPForm = () => {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     // Step 1
@@ -32,8 +34,8 @@ const ICPForm = () => {
     if (currentStep < 3) {
       setCurrentStep(prev => prev + 1);
     } else {
-      // Final step - process form
-      console.log("Final form data:", formData);
+      // Navigate to audit page
+      navigate('/audit');
     }
   };
 
