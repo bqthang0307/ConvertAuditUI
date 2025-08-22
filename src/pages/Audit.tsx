@@ -57,11 +57,11 @@ const Audit = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <div className="flex items-center justify-center p-6 pt-24">
+      <div className="flex items-center justify-center p-6 pt-32">
         <Card className="w-full max-w-md shadow-lg">
-          <CardContent className="p-8">
+          <CardContent className="p-8 pt-2">
             <div className="text-center mb-8">
-              <h1 className="text-xl font-semibold text-foreground mb-2">
+              <h1 className="text-xl font-bold text-foreground mb-2 font-sans leading-8 tracking-normal">
                 Let's create an audit for your SaaS landing page!
               </h1>
             </div>

@@ -9,19 +9,18 @@ const Header = () => {
   // const { theme, setTheme } = useTheme();
 
   return (
-    <header className="flex items-center justify-between px-6 py-4 bg-card border-b border-border">
+    <header className="flex items-center justify-between px-25 py-3 bg-card border-b border-border">
       <div className="flex items-center gap-2">
-        <img src={logo} alt="ConvertAudit" className="w-10 h-10 object-contain" />
-        <span className="text-[17px] font-semibold text-foreground leading-[100%] tracking-[0.02em] align-middle" style={{ fontFamily: 'Axiforma, sans-serif' }}>ConvertAudit</span>
+        <img src={logo} alt="ConvertAudit" className="w-40.25 h-9.25 py-4.625 hover:cursor-pointer " />
       </div>
 
       <nav className="flex items-center gap-6">
-        <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+        <a href="#" className="text-primary-900 text-body-lg hover:cursor-pointer transition-colors">
           History
         </a>
         <div className="relative">
-          <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-            Credit
+          <a href="#" className="text-primary-900 text-body-lg hover:cursor-pointer transition-colors">
+            Credits
           </a>
           <Badge className="absolute -top-2 -right-3 bg-primary text-primary-foreground text-xs px-1.5 py-0.5 min-w-[1.25rem] h-5 flex items-center justify-center rounded-full">
             9

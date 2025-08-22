@@ -84,7 +84,7 @@ const ICPForm = () => {
         return (
           <div className="space-y-6">
             <div>
-              <Label htmlFor="landingPageGoal" className="text-sm font-medium text-foreground mb-2 block">
+              <Label htmlFor="landingPageGoal" className="text-body-sm font-medium text-foreground mb-2 block">
                 What's the main goal of this landing page?
               </Label>
               <Textarea
@@ -92,7 +92,7 @@ const ICPForm = () => {
                 placeholder="e.g. Collect waitlist, Book demo,..."
                 value={formData.landingPageGoal}
                 onChange={(e) => handleInputChange("landingPageGoal", e.target.value)}
-                className={`w-full ${errors.landingPageGoal ? 'border-destructive' : ''}`}
+                className={`w-full min-h-[82px] ${errors.landingPageGoal ? 'border-destructive' : ''}`}
               />
               {errors.landingPageGoal && (
                 <p className="text-sm text-destructive mt-1">{errors.landingPageGoal}</p>
@@ -104,7 +104,7 @@ const ICPForm = () => {
             </div>
 
             <div>
-              <Label htmlFor="targetCustomer" className="text-sm font-medium text-foreground mb-2 block">
+              <Label htmlFor="targetCustomer" className="text-body-sm font-medium text-foreground mb-2 block">
                 Who is your target customer?
               </Label>
               <Textarea
@@ -112,7 +112,7 @@ const ICPForm = () => {
                 placeholder="e.g Startup founder, B2B SaaS team,..."
                 value={formData.targetCustomer}
                 onChange={(e) => handleInputChange("targetCustomer", e.target.value)}
-                className={`w-full ${errors.targetCustomer ? 'border-destructive' : ''}`}
+                className={`w-full min-h-[82px] ${errors.targetCustomer ? 'border-destructive' : ''}`}
               />
               {errors.targetCustomer && (
                 <p className="text-sm text-destructive mt-1">{errors.targetCustomer}</p>
@@ -129,7 +129,7 @@ const ICPForm = () => {
         return (
           <div className="space-y-6">
             <div>
-              <Label htmlFor="painPoint" className="text-sm font-medium text-foreground mb-2 block">
+              <Label htmlFor="painPoint" className="text-body-sm font-medium text-foreground mb-2 block">
                 What problem or pain point are they facing?
               </Label>
               <Textarea
@@ -137,7 +137,7 @@ const ICPForm = () => {
                 placeholder="e.g. Wasting hours filtering candidates, Manual onboarding,..."
                 value={formData.painPoint}
                 onChange={(e) => handleInputChange("painPoint", e.target.value)}
-                className={`w-full min-h-[100px] ${errors.painPoint ? 'border-destructive' : ''}`}
+                className={`w-full min-h-[82px] ${errors.painPoint ? 'border-destructive' : ''}`}
               />
               {errors.painPoint && (
                 <p className="text-sm text-destructive mt-1">{errors.painPoint}</p>
@@ -149,7 +149,7 @@ const ICPForm = () => {
             </div>
 
             <div>
-              <Label htmlFor="valueProposition" className="text-sm font-medium text-foreground mb-2 block">
+              <Label htmlFor="valueProposition" className="text-body-sm font-medium text-foreground mb-2 block">
                 What makes your product different or valuable to this audience?
               </Label>
               <Textarea
@@ -157,7 +157,7 @@ const ICPForm = () => {
                 placeholder="e.g. AI filters candidates instantly, No-code setup in 5 mins,..."
                 value={formData.valueProposition}
                 onChange={(e) => handleInputChange("valueProposition", e.target.value)}
-                className={`w-full min-h-[100px] ${errors.valueProposition ? 'border-destructive' : ''}`}
+                className={`w-full min-h-[82px] ${errors.valueProposition ? 'border-destructive' : ''}`}
               />
               {errors.valueProposition && (
                 <p className="text-sm text-destructive mt-1">{errors.valueProposition}</p>
@@ -174,7 +174,7 @@ const ICPForm = () => {
         return (
           <div className="space-y-6">
             <div>
-              <Label htmlFor="currentSolution" className="text-sm font-medium text-foreground mb-2 block">
+              <Label htmlFor="currentSolution" className="text-body-sm font-medium text-foreground mb-2 block">
                 Anything else we should know before auditing? (Optional)
               </Label>
               <Textarea
