@@ -78,6 +78,7 @@ const Audit = () => {
                   value={formData.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
                   className={`w-full ${errors.email ? 'border-destructive' : ''}`}
+                  aria-invalid={Boolean(errors.email) || undefined}
                 />
                 {errors.email && (
                   <p className="text-sm text-destructive mt-1">{errors.email}</p>
@@ -99,6 +100,7 @@ const Audit = () => {
                   value={formData.landingPageUrl}
                   onChange={(e) => handleInputChange("landingPageUrl", e.target.value)}
                   className={`w-full ${errors.landingPageUrl ? 'border-destructive' : ''}`}
+                  aria-invalid={Boolean(errors.landingPageUrl) || undefined}
                 />
                 {errors.landingPageUrl && (
                   <p className="text-sm text-destructive mt-1">{errors.landingPageUrl}</p>

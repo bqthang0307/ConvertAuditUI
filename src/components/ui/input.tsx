@@ -14,7 +14,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
         "transition-all duration-200",
         "bg-transparent text-base",
         "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
-        "aria-invalid:border-red-500 aria-invalid:ring-red-500",
+        "aria-invalid:border-destructive aria-invalid:ring-destructive/50 aria-invalid:bg-danger-50 aria-invalid:placeholder:text-danger-500",
         className
       )}
       style={{

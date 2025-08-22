@@ -34,6 +34,8 @@
   --color-success: hsl(120 100% 45%);
   --color-warning: hsl(45 100% 51%);
   --color-info: hsl(210 100% 56%);
+  --color-danger-50: hsla(0, 79%, 95%, 1);
+  --color-danger-500: hsla(0, 100%, 45%, 1);
 
   --radius: 0.5rem;
 
@@ -45,6 +47,9 @@
   --color-sidebar-accent-foreground: hsl(240 5.9% 10%);
   --color-sidebar-border: hsl(220 13% 91%);
   --color-sidebar-ring: hsl(217.2 91.2% 59.8%);
+
+  --color-excellent: hsla(82, 100%, 44%, 1);
+  --color-excellent-500: hsla(82, 100%, 44%, 1);
   
   --gradient-primary: linear-gradient(180deg, #2762FC 0%, #86A9FE 126.29%);
 }

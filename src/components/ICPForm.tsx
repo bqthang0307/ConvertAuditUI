@@ -93,9 +93,10 @@ const ICPForm = () => {
                 value={formData.landingPageGoal}
                 onChange={(e) => handleInputChange("landingPageGoal", e.target.value)}
                 className={`w-full min-h-[82px] ${errors.landingPageGoal ? 'border-destructive' : ''}`}
+                aria-invalid={Boolean(errors.landingPageGoal) || undefined}
               />
               {errors.landingPageGoal && (
-                <p className="text-sm text-destructive mt-1">{errors.landingPageGoal}</p>
+                <p className="text-sm text-danger-500 mt-1">{errors.landingPageGoal}</p>
               )}
               <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
                 <Info className="w-3 h-3" />
@@ -113,9 +114,10 @@ const ICPForm = () => {
                 value={formData.targetCustomer}
                 onChange={(e) => handleInputChange("targetCustomer", e.target.value)}
                 className={`w-full min-h-[82px] ${errors.targetCustomer ? 'border-destructive' : ''}`}
+                aria-invalid={Boolean(errors.targetCustomer) || undefined}
               />
               {errors.targetCustomer && (
-                <p className="text-sm text-destructive mt-1">{errors.targetCustomer}</p>
+                <p className="text-sm text-danger-500 mt-1">{errors.targetCustomer}</p>
               )}
               <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
                 <Info className="w-3 h-3" />
@@ -138,9 +140,10 @@ const ICPForm = () => {
                 value={formData.painPoint}
                 onChange={(e) => handleInputChange("painPoint", e.target.value)}
                 className={`w-full min-h-[82px] ${errors.painPoint ? 'border-destructive' : ''}`}
+                aria-invalid={Boolean(errors.painPoint) || undefined}
               />
               {errors.painPoint && (
-                <p className="text-sm text-destructive mt-1">{errors.painPoint}</p>
+                <p className="text-sm text-danger-500 mt-1">{errors.painPoint}</p>
               )}
               <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
                 <Info className="w-3 h-3" />
@@ -158,9 +161,10 @@ const ICPForm = () => {
                 value={formData.valueProposition}
                 onChange={(e) => handleInputChange("valueProposition", e.target.value)}
                 className={`w-full min-h-[82px] ${errors.valueProposition ? 'border-destructive' : ''}`}
+                aria-invalid={Boolean(errors.valueProposition) || undefined}
               />
               {errors.valueProposition && (
-                <p className="text-sm text-destructive mt-1">{errors.valueProposition}</p>
+                <p className="text-sm text-danger-500 mt-1">{errors.valueProposition}</p>
               )}
               <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
                 <Info className="w-3 h-3" />
