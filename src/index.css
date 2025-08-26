@@ -13,6 +13,8 @@
 
   --color-primary: hsl(224 76% 48%);
   --color-primary-foreground: hsl(0 0% 100%);
+  --color-primary-50: hsla(224, 100%, 96%, 1);
+  --color-primary-100: hsla(224, 97%, 87%, 1);
   --color-primary-900: hsl(223 74% 24%);
 
   --color-secondary: hsl(210 40% 96.1%);
@@ -92,6 +94,24 @@
     font-style: normal;
     font-size: 14px;
     line-height: 24px;
+    letter-spacing: 0;
+  }
+  .text-h5 {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-weight: 700; /* Medium */
+    font-style: Bold;
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: 0;
+  }
+  .text-menu {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-weight: 600; /* Medium */
+    font-style: Semi Bold;
+    font-size: 16px;
+    line-height: 25px;
+    paragraph-spacing: 10px;
+    list-spacing:5px;
     letter-spacing: 0;
   }
 }

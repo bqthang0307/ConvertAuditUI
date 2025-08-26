@@ -203,11 +203,11 @@ const ICPForm = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
-      <Card className="w-full max-w-2xl shadow-lg">
+      <Card className="w-full max-w-2xl shadow-lg py-0">
         <CardContent className="p-8">
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold text-foreground mb-2 font-sans leading-8 tracking-normal">
-              Help us understand your ICP so we can give better insights
+              Help us understand your ICP so we can give <br/>better insights
             </h1>
           </div>
 

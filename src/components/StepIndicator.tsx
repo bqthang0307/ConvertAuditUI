@@ -21,7 +21,7 @@ const StepIndicator = ({ currentStep, totalSteps }: StepIndicatorProps) => {
                 "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors",
                 isActive && "bg-excellent-500 text-accent-foreground",
                 isCompleted && "bg-excellent-500 text-accent-foreground",
-                !isActive && !isCompleted && "bg-muted text-excellent border border-excellent"
+                !isActive && !isCompleted && "text-excellent border border-excellent"
               )}
             >
               {isCompleted ? (

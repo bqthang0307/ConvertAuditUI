@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChevronDown, Plus, Sun, Moon } from "lucide-react";
 // import { useTheme } from "next-themes";
 import logo from "@/assets/logo.png";
+import addCircle from "@/assets/Icon/add-circle.svg";
 
 const Header = () => {
   // const { theme, setTheme } = useTheme();
@@ -40,9 +41,9 @@ const Header = () => {
           variant="gradient"
           className="font-axiforma text-figma-17 align-middle hover:cursor-pointer"
         >
-          <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center mr-2">
-            <Plus className="w-4 h-4" />
-          </div>
+          {/* <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center mr-2"> */}
+            <img src={addCircle}></img>
+          {/* </div> */}
           Create New
         </Button>
         <div className="flex items-center gap-2">
