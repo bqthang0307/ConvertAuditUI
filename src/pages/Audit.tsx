@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -6,13 +6,31 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Info } from "lucide-react";
 import Header from "@/components/Header";
 import { isEmail, isUrl } from "@/lib/validators";
+import { useLocation } from "react-router-dom";
+import { useAudit } from "@/hooks/useAudit";
 
 const Audit = () => {
+  const location = useLocation();
+  const { submitAudit, loading, error } = useAudit();
   const [formData, setFormData] = useState({
     email: "",
     landingPageUrl: ""
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [icpData, setIcpData] = useState({
+    goal: "",
+    targetCustomer: "",
+    painPoints: "",
+    valueProp: "",
+    extraContext: ""
+  });
+
+  // Get ICP data from navigation state
+  useEffect(() => {
+    if (location.state?.icpData) {
+      setIcpData(location.state.icpData);
+    }
+  }, [location.state]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -47,10 +65,28 @@ const Audit = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validateForm()) {
-      console.log("Audit form data:", formData);
-      // Process audit request
+      try {
+        // Prepare the request payload with all required fields
+        const requestPayload = {
+          userEmail: formData.email,
+          url: formData.landingPageUrl,
+          goal: icpData.goal,
+          targetCustomer: icpData.targetCustomer,
+          painPoints: icpData.painPoints,
+          valueProp: icpData.valueProp,
+          extraContext: icpData.extraContext
+        };
+        
+        console.log(requestPayload);
+        const result = await submitAudit(requestPayload);
+        console.log('Audit request successful:', result);
+        // Handle success - you might want to show a success message or redirect
+      } catch (error) {
+        console.error('Error submitting audit request:', error);
+        // Handle network error - you might want to show an error message
+      }
     }
   };
 
@@ -112,8 +148,9 @@ const Audit = () => {
               onClick={handleSubmit}
               variant="gradient"
               className="w-full h-12 text-base font-medium mt-8 hover:cursor-pointer"
+              disabled={loading}
             >
-              Get my audit
+              {loading ? 'Submitting...' : 'Get my audit'}
             </Button>
           </CardContent>
         </Card>

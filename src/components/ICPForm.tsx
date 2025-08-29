@@ -66,8 +66,15 @@ const ICPForm = () => {
       if (currentStep < 3) {
         setCurrentStep(prev => prev + 1);
       } else {
-        // Navigate to audit page
-        navigate('/audit');
+        // Navigate to audit page with ICP form data
+        const icpData = {
+          goal: formData.landingPageGoal,
+          targetCustomer: formData.targetCustomer,
+          painPoints: formData.painPoint,
+          valueProp: formData.valueProposition,
+          extraContext: formData.currentSolution
+        };
+        navigate('/audit', { state: { icpData } });
       }
     }
   };
