@@ -8,10 +8,13 @@ import Header from "@/components/Header";
 import { isEmail, isUrl } from "@/lib/validators";
 import { useLocation } from "react-router-dom";
 import { useAudit } from "@/hooks/useAudit";
+import { useAuditEngine } from "@/hooks/useAuditEngine";
+const SCRAPE_URL = import.meta.env.VITE_API_SCAPE_URL;
 
 const Audit = () => {
   const location = useLocation();
-  const { submitAudit, loading, error } = useAudit();
+  const { submitAudit, loading } = useAudit();
+  const { scrapeAndRunEngine, loading: engineLoading } = useAuditEngine();
   const [formData, setFormData] = useState({
     email: "",
     landingPageUrl: ""
@@ -68,8 +71,8 @@ const Audit = () => {
   const handleSubmit = async () => {
     if (validateForm()) {
       try {
-        // Prepare the request payload with all required fields
-        const requestPayload = {
+        // Prepare the audit request payload
+        const auditPayload = {
           userEmail: formData.email,
           url: formData.landingPageUrl,
           goal: icpData.goal,
@@ -79,12 +82,27 @@ const Audit = () => {
           extraContext: icpData.extraContext
         };
         
-        console.log(requestPayload);
-        const result = await submitAudit(requestPayload);
-        console.log('Audit request successful:', result);
+        // Prepare the engine request payload
+        const enginePayload = {
+          url: formData.landingPageUrl,
+          notify_api: SCRAPE_URL,
+          autoscroll: true as const
+        };
+        
+        console.log('Audit payload:', auditPayload);
+        console.log('Engine payload:', enginePayload);
+        
+        // Submit both requests
+        const [auditResult, engineResult] = await Promise.all([
+          submitAudit(auditPayload),
+          scrapeAndRunEngine(enginePayload)
+        ]);
+        
+        console.log('Audit request successful:', auditResult);
+        console.log('Audit engine request successful:', engineResult);
         // Handle success - you might want to show a success message or redirect
       } catch (error) {
-        console.error('Error submitting audit request:', error);
+        console.error('Error submitting requests:', error);
         // Handle network error - you might want to show an error message
       }
     }
@@ -148,9 +166,9 @@ const Audit = () => {
               onClick={handleSubmit}
               variant="gradient"
               className="w-full h-12 text-base font-medium mt-8 hover:cursor-pointer"
-              disabled={loading}
+              disabled={loading || engineLoading}
             >
-              {loading ? 'Submitting...' : 'Get my audit'}
+              {loading || engineLoading ? 'Submitting...' : 'Get my audit'}
             </Button>
           </CardContent>
         </Card>
