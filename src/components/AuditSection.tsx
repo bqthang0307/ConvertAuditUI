@@ -5,12 +5,6 @@ interface AuditSectionProps {
   id: string;
   title: string;
   score: number;
-  color: string;
-  badge?: {
-    text: string;
-    bgColor: string;
-    textColor: string;
-  };
   description?: string;
   workingWell?: string[];
   missing?: string[];
@@ -21,20 +15,76 @@ const AuditSection = ({
   id,
   title,
   score,
-  color,
-  badge,
   description,
   workingWell,
   missing,
   recommendations
 }: AuditSectionProps) => {
+  // Determine color, badge, and title based on score
+  const getScoreInfo = (score: number) => {
+    if (score >= 85) {
+      return {
+        color: "var(--color-excellent)",
+        badge: {
+          text: "Excellent",
+          bgColor: "bg-green-100",
+          textColor: "text-green-800"
+        },
+        title: "You Are Close to Conversion Ready"
+      };
+    } else if (score >= 70) {
+      return {
+        color: "var(--color-excellent)",
+        badge: {
+          text: "Good",
+          bgColor: "bg-green-100",
+          textColor: "text-green-800"
+        },
+        title: "Almost There with Just a Few Tweaks"
+      };
+    } else if (score >= 55) {
+      return {
+        color: "var(--color-needs-improvement)",
+        badge: {
+          text: "Needs Improvement",
+          bgColor: "bg-yellow-100",
+          textColor: "text-yellow-800"
+        },
+        title: "You Are on the Right Track"
+      };
+    } else if (score >= 40) {
+      return {
+        color: "var(--color-poor)",
+        badge: {
+          text: "Poor",
+          bgColor: "bg-red-100",
+          textColor: "text-red-800"
+        },
+        title: "You Have Potential and It Shows"
+      };
+    } else {
+      return {
+        color: "var(--color-poor)",
+        badge: {
+          text: "Failed",
+          bgColor: "bg-red-100",
+          textColor: "text-red-800"
+        },
+        title: "Let's Fix This From the Ground Up"
+      };
+    }
+  };
+
+  const scoreInfo = getScoreInfo(score);
+  const progressColor = scoreInfo.color;
+  const badge = scoreInfo.badge;
   return (
     <section id={id}>
       <Card>
         <CardHeader className="pb-4">
           <div className="flex items-center gap-4">
-            <div className="relative w-16 h-16">
-              <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 64 64">
+            <div className="relative w-29 h-29">
+              <svg className="w-29 h-29 transform -rotate-90" viewBox="0 0 64 64">
                 <circle
                   cx="32"
                   cy="32"
@@ -48,7 +98,7 @@ const AuditSection = ({
                   cx="32"
                   cy="32"
                   r="26"
-                  stroke={color}
+                  stroke={progressColor}
                   strokeWidth="4"
                   fill="transparent"
                   strokeDasharray={`${2 * Math.PI * 26}`}
@@ -63,8 +113,11 @@ const AuditSection = ({
             </div>
             <div>
               <CardTitle className="text-2xl">{title}</CardTitle>
+              <p className="text-sm text-muted-foreground mt-1 italic">
+                {scoreInfo.title}
+              </p>
               {badge && (
-                <span className={`inline-flex items-center px-2 py-1 text-xs font-medium ${badge.bgColor} ${badge.textColor} rounded-full`}>
+                <span className={`inline-flex items-center px-2 py-1 text-xs font-medium ${badge.bgColor} ${badge.textColor} rounded-full mt-2`}>
                   {badge.text}
                 </span>
               )}

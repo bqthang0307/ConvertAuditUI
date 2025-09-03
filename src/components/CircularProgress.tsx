@@ -1,13 +1,46 @@
 interface CircularProgressProps {
-    value: number;
-    color: string;
-    label: string;
-  }
-  
-  const CircularProgress = ({ value, color, label }: CircularProgressProps) => (
+  value: number;
+  label: string;
+}
+
+const CircularProgress = ({ value, label }: CircularProgressProps) => {
+  // Determine color and title based on value
+  const getScoreInfo = (score: number) => {
+    if (score >= 85) {
+      return {
+        color: "var(--color-excellent)",
+        title: "You Are Close to Conversion Ready"
+      };
+    } else if (score >= 70) {
+      return {
+        color: "var(--color-excellent)",
+        title: "Almost There with Just a Few Tweaks"
+      };
+    } else if (score >= 55) {
+      return {
+        color: "var(--color-needs-improvement)",
+        title: "You Are on the Right Track"
+      };
+    } else if (score >= 40) {
+      return {
+        color: "var(--color-poor)",
+        title: "You Have Potential and It Shows"
+      };
+    } else {
+      return {
+        color: "var(--color-poor)",
+        title: "Let's Fix This From the Ground Up"
+      };
+    }
+  };
+
+  const scoreInfo = getScoreInfo(value);
+  const progressColor = scoreInfo.color;
+
+  return (
     <div className="flex flex-col items-center space-y-3">
-      <div className="relative w-24 h-24">
-        <svg className="w-24 h-24 transform -rotate-90" viewBox="0 0 100 100">
+      <div className="relative w-46 h-46">
+        <svg className="w-46 h-46 transform -rotate-90" viewBox="0 0 100 100">
           <circle
             cx="50"
             cy="50"
@@ -15,13 +48,13 @@ interface CircularProgressProps {
             stroke="currentColor"
             strokeWidth="8"
             fill="transparent"
-            className="text-muted-foreground/20"
+            className="text-light-bg-400"
           />
           <circle
             cx="50"
             cy="50"
             r="40"
-            stroke={color}
+            stroke={progressColor}
             strokeWidth="8"
             fill="transparent"
             strokeDasharray={`${2 * Math.PI * 40}`}
@@ -31,11 +64,14 @@ interface CircularProgressProps {
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-xl font-bold text-foreground">{value}%</span>
+          <span className="text-xl font-bold text-dark-bg">{value}%</span>
         </div>
       </div>
-      <span className="text-sm font-medium text-foreground">{label}</span>
+      <div className="text-center">
+        <span className="text-sm font-medium text-dark-bg">{label}</span>
+      </div>
     </div>
   );
-  
-  export default CircularProgress;
+};
+
+export default CircularProgress;
