@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { ChevronRight, Clock } from "lucide-react";
+import { Clock } from "lucide-react";
 import Header from "@/components/Header";
+import arrowDownIcon from "@/assets/Icon/arrow-down.svg";
 // import AuditSection from "@/components/AuditSection";
 import SectionWithSubsections from "@/components/SectionWithSubsections";
 import CircularProgress from "@/components/CircularProgress";
@@ -389,9 +390,9 @@ const AuditReport = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <Header />
-      <div className="container mx-auto px-4 py-6 pt-24 max-w-7xl">
+      <div className="container mx-auto px-4 py-6 pt-12 max-w-7xl">
         {/* Header Section */}
         <div className="text-center mb-8">
           <h1 className="text-2xl text-h6 text-darkBG mb-2">
@@ -405,8 +406,8 @@ const AuditReport = () => {
         </div>
 
         {/* Main Score */}
-        <div className="text-center mb-12">
-          <div className="relative w-64 h-64 mx-auto mb-6">
+        <div className="text-center mb-10">
+          <div className="relative w-64 h-64 mx-auto mb-2.5">
             <svg className="w-64 h-64 transform -rotate-90" viewBox="0 0 200 200">
               <circle
                 cx="100"
@@ -436,8 +437,8 @@ const AuditReport = () => {
             </div>
           </div>
 
-          <h2 className="text-2xl font-bold text-dark-bg mb-3">{mainScoreInfo.title}</h2>
-          <p className="text-dark-bg text-title-18 mx-auto">
+          <h2 className="text-2xl font-bold text-dark-bg mb-6">{mainScoreInfo.title}</h2>
+          <p className="text-dark-bg text-title-18 mx-auto max-w-[600px]">
             Your Clarity is solid. Now boost conversions by adding urgency,
             emotional trust, and clearer audience targeting.
           </p>
@@ -451,7 +452,7 @@ const AuditReport = () => {
         </div>
 
         {/* Layout with Sidebar Navigation */}
-        <div className="flex gap-8">
+        <div className="flex">
           {/* Left Navigation Sidebar */}
           <div className="w-53 flex-shrink-0">
             <div className="sticky top-8 bg-card border border-border rounded-lg p-4">
@@ -465,8 +466,10 @@ const AuditReport = () => {
                       transition-colors bg-dark-bg-50 hover: cursor-pointer`}
                   >
                     <span className="text-title-18 text-dark-bg">Clarity</span>
-                    <ChevronRight
-                      className={`w-4 h-4 transition-transform ${activeSection === "clarity" ? "rotate-90" : ""
+                    <img 
+                      src={arrowDownIcon} 
+                      alt="arrow" 
+                      className={`w-6 h-6 transition-transform ${activeSection === "clarity" ? "-rotate-180" : ""
                         }`}
                     />
                   </button>
@@ -479,14 +482,14 @@ const AuditReport = () => {
                         className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Dream Outcome</span>
-                        <ChevronRight className="w-3 h-3" />
+                        
                       </button>
                       <button
                         onClick={() => scrollToSection("time-delay-effort")}
                         className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Time Delay & Effort</span>
-                        <ChevronRight className="w-3 h-3" />
+                        
                       </button>
                     </div>
                   )}
@@ -500,8 +503,10 @@ const AuditReport = () => {
                       transition-colors bg-dark-bg-50 hover: cursor-pointer`}
                   >
                     <span className="text-title-18 text-dark-bg">Trust</span>
-                    <ChevronRight
-                      className={`w-4 h-4 transition-transform ${activeSection === "trust" ? "rotate-90" : ""
+                    <img 
+                      src={arrowDownIcon} 
+                      alt="arrow" 
+                      className={`w-6 h-6 transition-transform ${activeSection === "trust" ? "-rotate-180" : ""
                         }`}
                     />
                   </button>
@@ -513,28 +518,28 @@ const AuditReport = () => {
                         className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Reviews & Social Proof</span>
-                        <ChevronRight className="w-3 h-3" />
+                        <img src={arrowDownIcon} alt="arrow" className="w-6 h-6" />
                       </button>
                       <button
                         onClick={() => scrollToSection("trust_badges_&_eputation")}
                         className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Trust Badges & Reputation</span>
-                        <ChevronRight className="w-3 h-3" />
+                        <img src={arrowDownIcon} alt="arrow" className="w-6 h-6" />
                       </button>
                       <button
                         onClick={() => scrollToSection("personality_&_face")}
                         className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Personality & Face</span>
-                        <ChevronRight className="w-3 h-3" />
+                        <img src={arrowDownIcon} alt="arrow" className="w-6 h-6" />
                       </button>
                       <button
                         onClick={() => scrollToSection("emotional_back_story")}
                         className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Emotional Back Story</span>
-                        <ChevronRight className="w-3 h-3" />
+                        <img src={arrowDownIcon} alt="arrow" className="w-6 h-6" />
                       </button>
                     </div>
                   )}
@@ -548,8 +553,10 @@ const AuditReport = () => {
                       transition-colors bg-dark-bg-50 hover: cursor-pointer`}
                   >
                     <span className="text-title-18 text-dark-bg">Conversion</span>
-                    <ChevronRight
-                      className={`w-4 h-4 transition-transform ${activeSection === "conversion" ? "rotate-90" : ""
+                    <img 
+                      src={arrowDownIcon} 
+                      alt="arrow" 
+                      className={`w-6 h-6 transition-transform ${activeSection === "conversion" ? "-rotate-180" : ""
                         }`}
                     />
                   </button>
@@ -561,14 +568,14 @@ const AuditReport = () => {
                         className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Call to Action</span>
-                        <ChevronRight className="w-3 h-3" />
+                        <img src={arrowDownIcon} alt="arrow" className="w-6 h-6" />
                       </button>
                       <button
                         onClick={() => scrollToSection("incentive_to_take_action")}
                         className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Incentive to Take Action</span>
-                        <ChevronRight className="w-3 h-3" />
+                        <img src={arrowDownIcon} alt="arrow" className="w-6 h-6" />
                       </button>
                     </div>
                   )}
@@ -687,7 +694,7 @@ const AuditReport = () => {
         {/* Priority Recommendations */}
         <div className="mt-16">
           <h2 className="text-2xl font-bold text-foreground mb-8">Priority Recommendations</h2>
-          <div className="bg-card border border-border rounded-lg overflow-hidden">
+          <div className="border border-border rounded-lg overflow-hidden">
             <Table>
               <TableHeader>
                 <TableRow>

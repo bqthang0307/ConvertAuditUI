@@ -111,7 +111,7 @@ const SectionWithSubsections = ({
 
   return (
     <section id={id}>
-      <Card>
+      <Card className="mt-0 bg-background">
         <CardHeader className="pb-4">
           <div className="flex items-center gap-4">
             <div className={`relative ${mainSize.container}`}>
@@ -161,7 +161,7 @@ const SectionWithSubsections = ({
             const subsectionBadge = subsectionScoreInfo.badge;
 
             return (
-              <div id={subsection.id} key={subsection.id} className={`border-l-4 ${subsectionBorderColor} pl-6`}>
+              <div id={subsection.id} key={subsection.id} >
                 <div className="flex items-center gap-4 mb-2">
                   <div className="flex items-center justify-between w-full">
                     <div>
@@ -183,7 +183,7 @@ const SectionWithSubsections = ({
                   <span className={`text-title-18 text-primary-CTA inline`}>{subsection.score}%</span>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {subsection.workingWell && subsection.workingWell.length > 0 && (
                     <div>
                       <h5 className="mb-2 flex items-center text-title-18 text-dark-bg-300">

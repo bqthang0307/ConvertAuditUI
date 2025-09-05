@@ -64,11 +64,11 @@ const CircularProgress = ({ value, label }: CircularProgressProps) => {
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-xl font-bold text-dark-bg">{value}%</span>
+          <span className="text-h5 text-dark-bg">{value}%</span>
         </div>
       </div>
       <div className="text-center">
-        <span className="text-sm font-medium text-dark-bg">{label}</span>
+        <span className="text-h6 text-dark-bg">{label}</span>
       </div>
     </div>
   );
