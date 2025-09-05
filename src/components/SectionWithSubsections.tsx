@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import activityIcon from "@/assets/Icon/activity.svg";
 import likeIcon from "@/assets/Icon/like.svg";
-import arrowDownIcon from "@/assets/Icon/arrow-down.svg";
+import tickIcon from "@/assets/Icon/Tick.svg";
 
 interface SubsectionData {
   id: string;
@@ -32,7 +32,6 @@ const SectionWithSubsections = ({
   description,
   subsections,
   showMainDescription = true,
-  subsectionBorderColor = "border-blue-200",
   mainProgressSize = 'lg'
 }: SectionWithSubsectionsProps) => {
   // Determine color, badge, and title based on score
@@ -42,8 +41,8 @@ const SectionWithSubsections = ({
         color: "var(--color-excellent)",
         badge: {
           text: "Excellent",
-          bgColor: "bg-green-100",
-          textColor: "text-green-800"
+          bgColor: "bg-excellent-50",
+          textColor: "text-excellent-600"
         },
         title: "You Are Close to Conversion Ready"
       };
@@ -52,8 +51,8 @@ const SectionWithSubsections = ({
         color: "var(--color-excellent)",
         badge: {
           text: "Good",
-          bgColor: "bg-green-100",
-          textColor: "text-green-800"
+          bgColor: "bg-excellent-50",
+          textColor: "text-excellent-800"
         },
         title: "Almost There with Just a Few Tweaks"
       };
@@ -62,8 +61,8 @@ const SectionWithSubsections = ({
         color: "var(--color-needs-improvement)",
         badge: {
           text: "Needs Improvement",
-          bgColor: "bg-yellow-100",
-          textColor: "text-yellow-800"
+          bgColor: "bg-good-50",
+          textColor: "text-good-600"
         },
         title: "You Are on the Right Track"
       };
@@ -72,8 +71,8 @@ const SectionWithSubsections = ({
         color: "var(--color-poor)",
         badge: {
           text: "Poor",
-          bgColor: "bg-red-100",
-          textColor: "text-red-800"
+          bgColor: "bg-warning-50",
+          textColor: "text-warning-600"
         },
         title: "You Have Potential and It Shows"
       };
@@ -82,8 +81,8 @@ const SectionWithSubsections = ({
         color: "var(--color-poor)",
         badge: {
           text: "Failed",
-          bgColor: "bg-red-100",
-          textColor: "text-red-800"
+          bgColor: "bg-danger-50",
+          textColor: "text-danger-500"
         },
         title: "Let's Fix This From the Ground Up"
       };
@@ -169,8 +168,8 @@ const SectionWithSubsections = ({
                     </div>
                     {subsectionBadge && (
                       <div className={`inline-flex items-center px-2 py-1 text-xs font-medium
-                        ${subsectionBadge.bgColor} ${subsectionBadge.textColor} rounded-sm border-1 border-${subsectionBadge.textColor}`}>
-                        <img src={likeIcon} alt="acitivityIcon" className="w-6 h-6 inline" />
+                        ${subsectionBadge.bgColor} ${subsectionBadge.textColor} rounded-sm border border-current`}>
+                        <img src={likeIcon} alt="acitivityIcon" className={`w-6 h-6 inline ${subsectionBadge.textColor}`} />
                         <span className={`inline-flex items-center px-2 py-1 text-xs`}>
                           {subsectionBadge.text}
                         </span>
@@ -213,7 +212,7 @@ const SectionWithSubsections = ({
                   {subsection.recommendations && subsection.recommendations.length > 0 && (
                     <div className="bg-excellent-50 border border-green-200 rounded-lg p-4">
                       <h5 className="text-h6 mb-2 flex items-center gap-2 text-dark-bg">
-                      <img src={arrowDownIcon} className="w-4 h-4 rounded-full border border-dark-bg"/>
+                      <img src={tickIcon} className="w-5 h-5 rounded-full border border-dark-bg"/>
                         Recommendation
                       </h5>
                       <ul className="text-body-lg text-dark-bg-300 space-y-1">
