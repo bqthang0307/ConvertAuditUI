@@ -2,7 +2,7 @@
 
 /* Design system — all colors in HSL, plus radius token */
 @theme {
-  --color-background: hsl(0 0% 98%);
+  --color-background: hsl(0 0% 100%);
   --color-foreground: hsl(212 47% 23%); /* #DarkBG in figma*/
 
   --color-card: hsl(0 0% 100%);
@@ -28,7 +28,7 @@
   --color-accent-foreground: hsl(0 0% 100%);
 
   --color-destructive: hsl(0 84.2% 60.2%);
-  --color-destructive-foreground: hsl(210 40% 98%);
+  --color-destructive-foreground: hsl(210 40% 100%);
 
   --color-border: hsl(214.3 31.8% 91.4%);
   --color-input: hsl(214.3 31.8% 91.4%);
@@ -42,10 +42,10 @@
 
   --radius: 0.5rem;
 
-  --color-sidebar-background: hsl(0 0% 98%);
+  --color-sidebar-background: hsl(0 0% 100%);
   --color-sidebar-foreground: hsl(240 5.3% 26.1%);
   --color-sidebar-primary: hsl(240 5.9% 10%);
-  --color-sidebar-primary-foreground: hsl(0 0% 98%);
+  --color-sidebar-primary-foreground: hsl(0 0% 100%);
   --color-sidebar-accent: hsl(240 4.8% 95.9%);
   --color-sidebar-accent-foreground: hsl(240 5.9% 10%);
   --color-sidebar-border: hsl(220 13% 91%);
@@ -56,6 +56,7 @@
   --color-excellent-500: hsla(82, 100%, 44%, 1);
   --color-excellent-600: hsla(82, 100%, 40%, 1);
   --color-excellent-800: hsla(82, 100%, 24%, 1);
+  --color-excellent-900: hsla(82, 100%, 18%, 1);
 
   --color-good-50: hsla(53, 92%, 95%, 1);
   --color-good-600: hsla(52, 100%, 44%, 1);

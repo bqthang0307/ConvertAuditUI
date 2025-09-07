@@ -455,7 +455,7 @@ const AuditReport = () => {
         <div className="flex">
           {/* Left Navigation Sidebar */}
           <div className="w-53 flex-shrink-0">
-            <div className="sticky top-8 bg-card border border-border rounded-lg p-4">
+            <div className="sticky top-8 bg-card border border-border rounded-2xl p-4">
               {/* Navigation Items */}
               <nav className="space-y-2">
                 {/* Clarity with nested items */}
@@ -518,28 +518,24 @@ const AuditReport = () => {
                         className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Reviews & Social Proof</span>
-                        <img src={arrowDownIcon} alt="arrow" className="w-6 h-6" />
                       </button>
                       <button
                         onClick={() => scrollToSection("trust_badges_&_eputation")}
                         className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Trust Badges & Reputation</span>
-                        <img src={arrowDownIcon} alt="arrow" className="w-6 h-6" />
                       </button>
                       <button
                         onClick={() => scrollToSection("personality_&_face")}
                         className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Personality & Face</span>
-                        <img src={arrowDownIcon} alt="arrow" className="w-6 h-6" />
                       </button>
                       <button
                         onClick={() => scrollToSection("emotional_back_story")}
                         className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Emotional Back Story</span>
-                        <img src={arrowDownIcon} alt="arrow" className="w-6 h-6" />
                       </button>
                     </div>
                   )}
@@ -568,14 +564,12 @@ const AuditReport = () => {
                         className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Call to Action</span>
-                        <img src={arrowDownIcon} alt="arrow" className="w-6 h-6" />
                       </button>
                       <button
                         onClick={() => scrollToSection("incentive_to_take_action")}
                         className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Incentive to Take Action</span>
-                        <img src={arrowDownIcon} alt="arrow" className="w-6 h-6" />
                       </button>
                     </div>
                   )}
@@ -585,7 +579,7 @@ const AuditReport = () => {
           </div>
 
           {/* Main Content Area */}
-          <div className="flex-1 space-y-12">
+          <div className="flex-1">
             {/* Clarity Section with Subsections */}
             <SectionWithSubsections
               id="clarity"

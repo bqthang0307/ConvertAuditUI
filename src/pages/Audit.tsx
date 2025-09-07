@@ -9,6 +9,7 @@ import { isEmail, isUrl } from "@/lib/validators";
 import { useLocation } from "react-router-dom";
 import { useAudit } from "@/hooks/useAudit";
 import { useAuditEngine } from "@/hooks/useAuditEngine";
+import { useNavigate } from "react-router-dom";
 const SCRAPE_URL = import.meta.env.VITE_API_SCAPE_URL;
 
 const Audit = () => {
@@ -27,7 +28,8 @@ const Audit = () => {
     valueProp: "",
     extraContext: ""
   });
-
+  const navigate = useNavigate();
+  
   // Get ICP data from navigation state
   useEffect(() => {
     if (location.state?.icpData) {
@@ -51,19 +53,19 @@ const Audit = () => {
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    
+
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!isEmail(formData.email)) {
       newErrors.email = "Please enter a valid email address";
     }
-    
+
     if (!formData.landingPageUrl.trim()) {
       newErrors.landingPageUrl = "Landing page URL is required";
     } else if (!isUrl(formData.landingPageUrl)) {
       newErrors.landingPageUrl = "Please enter a valid URL";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -81,28 +83,16 @@ const Audit = () => {
           valueProp: icpData.valueProp,
           extraContext: icpData.extraContext
         };
-        
-        // Prepare the engine request payload
-        const enginePayload = {
-          url: formData.landingPageUrl,
-          notify_api: SCRAPE_URL,
-          autoscroll: true as const
-        };
-        
+
         console.log('Audit payload:', auditPayload);
-        console.log('Engine payload:', enginePayload);
-        
-        // Submit both requests
-        const [auditResult, engineResult] = await Promise.all([
-          submitAudit(auditPayload),
-          scrapeAndRunEngine(enginePayload)
-        ]);
-        
-        console.log('Audit request successful:', auditResult);
-        console.log('Audit engine request successful:', engineResult);
+
+        // Submit audit request only
+        const auditResult = await submitAudit(auditPayload);
+        console.log('Audit request successful:', auditResult);  
+        navigate(`/audit-viewer?jobId=${auditResult.jobId}`);
         // Handle success - you might want to show a success message or redirect
       } catch (error) {
-        console.error('Error submitting requests:', error);
+        console.error('Error submitting audit request:', error);
         // Handle network error - you might want to show an error message
       }
     }
@@ -116,7 +106,7 @@ const Audit = () => {
           <CardContent className="p-8 pt-2">
             <div className="text-center pb-8">
               <h1 className="text-xl font-bold h-5 text-foreground mb-2 tracking-normal">
-                Let's create an audit for your <br/>SaaS landing page!
+                Let's create an audit for your <br />SaaS landing page!
               </h1>
             </div>
 
