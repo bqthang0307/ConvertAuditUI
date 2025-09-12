@@ -8,14 +8,11 @@ import Header from "@/components/Header";
 import { isEmail, isUrl } from "@/lib/validators";
 import { useLocation } from "react-router-dom";
 import { useAudit } from "@/hooks/useAudit";
-import { useAuditEngine } from "@/hooks/useAuditEngine";
 import { useNavigate } from "react-router-dom";
-const SCRAPE_URL = import.meta.env.VITE_API_SCAPE_URL;
 
 const Audit = () => {
   const location = useLocation();
   const { submitAudit, loading } = useAudit();
-  const { scrapeAndRunEngine, loading: engineLoading } = useAuditEngine();
   const [formData, setFormData] = useState({
     email: "",
     landingPageUrl: ""
@@ -89,7 +86,7 @@ const Audit = () => {
         // Submit audit request only
         const auditResult = await submitAudit(auditPayload);
         console.log('Audit request successful:', auditResult);  
-        navigate(`/audit-viewer?jobId=${auditResult.jobId}`);
+        navigate(`/audit-viewer?jobId=${auditResult.data}`);
         // Handle success - you might want to show a success message or redirect
       } catch (error) {
         console.error('Error submitting audit request:', error);
@@ -156,9 +153,9 @@ const Audit = () => {
               onClick={handleSubmit}
               variant="gradient"
               className="w-full h-12 text-base font-medium mt-8 hover:cursor-pointer"
-              disabled={loading || engineLoading}
+              disabled={loading}
             >
-              {loading || engineLoading ? 'Submitting...' : 'Get my audit'}
+              {loading ? 'Submitting...' : 'Get my audit'}
             </Button>
           </CardContent>
         </Card>

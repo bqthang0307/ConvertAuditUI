@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Clock } from "lucide-react";
+import { useLocation, useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import arrowDownIcon from "@/assets/Icon/arrow-down.svg";
 // import AuditSection from "@/components/AuditSection";
@@ -7,9 +8,32 @@ import SectionWithSubsections from "@/components/SectionWithSubsections";
 import CircularProgress from "@/components/CircularProgress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { auditService } from "@/services/auditService";
 
 const AuditReport = () => {
   const [activeSection, setActiveSection] = useState("clarity");
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const [auditData, setAuditData] = useState<any | null>(location.state?.auditData ?? null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const formatDate = (isoString?: string) => {
+    if (!isoString) return "";
+    const date = new Date(isoString);
+    if (isNaN(date.getTime())) return "";
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const formatDisplayUrl = (raw?: string) => {
+    if (!raw) return "";
+    const withoutAt = raw.replace(/^@/, "");
+    const withoutScheme = withoutAt.replace(/^https?:\/\//i, "");
+    return withoutScheme;
+  };
 
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId);
@@ -19,303 +43,335 @@ const AuditReport = () => {
     }
   };
 
-
-
-  const auditData = [
-    {
-      "usp": {
-        "summary": "The landing page promotes a smarter SaaS landing page audit tool to help boost conversions. It is visually appealing and mentions SaaS founders multiple times, which aligns partially with the ICP’s target customer (SMBs). However, the copy misses the specific pain point of low trial-to-paid conversion, and the differentiator of faster onboarding is not clearly stated.",
-        "dream_outcome": {
-          "whatsWorking": [
-            "Mentions improved conversions in headline and subheadline",
-            "References SaaS founders, partially aligning with SMB targeting",
-            "Social proof from testimonials builds trust"
-          ],
-          "whatsMissing": [
-            "No clear mention of the ICP's specific pain point: 'low trial-to-paid'",
-            "Target customer (SMBs) is vaguely referenced; not explicit",
-            "No transformation before-after story shown",
-            "No visuals showing outcome or ROI"
-          ],
-          "recommendations": [
-            {
-              "action": "Add subheadline or section stating explicitly that this helps increase trial-to-paid conversions",
-              "benefit": "Aligns directly with ICP pain point",
-              "purpose": "Clarity",
-              "effort": "Easy",
-              "impact": "High"
-            },
-            {
-              "action": "Include visual (e.g. graph or user journey) showing before-after conversion lift",
-              "benefit": "Shows impact clearly",
-              "purpose": "Conversion",
-              "effort": "Medium",
-              "impact": "High"
-            },
-            {
-              "action": "Make 'SaaS founders' or 'SMBs' more prominent in the copy to clearly define the audience",
-              "benefit": "Better targeting",
-              "purpose": "Clarity",
-              "effort": "Easy",
-              "impact": "Medium"
-            }
-          ],
-          "score": 65
-        },
-        "time_&_effort": {
-          "whatsWorking": [
-            "Mentions '3 simple steps' to get started",
-            "Mentions automation in generating tailored audit insights",
-            "Clear call-to-action and simple form submission"
-          ],
-          "whatsMissing": [
-            "No specified time to see benefits or results",
-            "No comparison to manual audit process or time savings",
-            "‘Faster onboarding’ differentiator is not explicitly shown"
-          ],
-          "recommendations": [
-            {
-              "action": "Add a line or badge highlighting time to completed audit (e.g. 'Get insights in under 5 minutes')",
-              "benefit": "Sets clear expectations",
-              "purpose": "Clarity",
-              "effort": "Easy",
-              "impact": "Medium"
-            },
-            {
-              "action": "State how much faster this tool is vs manual audit (e.g. '10x faster than traditional methods')",
-              "benefit": "Highlights differentiator",
-              "purpose": "Conversion",
-              "effort": "Medium",
-              "impact": "High"
-            },
-            {
-              "action": "Use comparison table or visual to show effort saved vs current solutions",
-              "benefit": "Reinforces value and ease",
-              "purpose": "Trust",
-              "effort": "Medium",
-              "impact": "Medium"
-            }
-          ],
-          "score": 60
-        },
-        "weighted_score": 63
-      }
-    },
-    {
-      "trust": {
-        "summary": "The landing page establishes a foundational level of trust through testimonials, founder visibility, and some social proof. However, the connection to SMBs and the specific pain point of low trial-to-paid conversions is weak or missing. Key trust elements like detailed outcomes in testimonials, emotional storytelling tied to SMB struggles, and supporting evidence for the faster onboarding differentiator are lacking and present opportunities to improve credibility and relevance to the ICP.",
-        "reviews_&_social_proof": {
-          "whatsWorking": [
-            "Multiple testimonials displayed with names and logos.",
-            "5-star ratings included for added credibility."
-          ],
-          "whatsMissing": [
-            "No mention of role, company size, or industry – unclear if reviewers are SMBs.",
-            "No detail on results achieved or improvement in trial-to-paid success.",
-            "No video testimonials or emotional storytelling in reviews."
-          ],
-          "recommendations": [
-            {
-              "action": "Add titles, company size, and industry to each testimonial.",
-              "benefit": "Makes testimonials relatable for SMBs.",
-              "purpose": "Trust",
-              "effort": "Easy",
-              "impact": "Medium"
-            },
-            {
-              "action": "Include specific customer wins like 'increase in trial-to-paid' or similar metrics.",
-              "benefit": "Demonstrates product effectiveness on ICP pain point.",
-              "purpose": "Conversion",
-              "effort": "Medium",
-              "impact": "High"
-            },
-            {
-              "action": "Add one video testimonial from a founder of an SMB.",
-              "benefit": "Builds trust and connection with target customer base.",
-              "purpose": "Trust",
-              "effort": "Medium",
-              "impact": "High"
-            }
-          ],
-          "score": 50
-        },
-        "trust_badges_&_eputation": {
-          "whatsWorking": [
-            "Customer star ratings lend some credibility."
-          ],
-          "whatsMissing": [
-            "No mention of certifications, awards, or press features.",
-            "No third-party validation or industry trust badges.",
-            "No data/statistics showing onboarding speed advantage."
-          ],
-          "recommendations": [
-            {
-              "action": "Add visual trust badges (e.g., featured in press, trusted by X companies).",
-              "benefit": "Increases external credibility quickly.",
-              "purpose": "Trust",
-              "effort": "Medium",
-              "impact": "Medium"
-            },
-            {
-              "action": "Include a stat or proof point like 'average time to ROI' or 'onboarding in X minutes'.",
-              "benefit": "Supports faster onboarding claim with proof.",
-              "purpose": "Clarity",
-              "effort": "Medium",
-              "impact": "High"
-            }
-          ],
-          "score": 20
-        },
-        "personality_&_face": {
-          "whatsWorking": [
-            "Photo and introduction of founder toward the bottom of the page.",
-            "Founder provides product context and motivation."
-          ],
-          "whatsMissing": [
-            "No additional team members or personal touches beyond the founder.",
-            "Lacks quotes that humanize the brand further."
-          ],
-          "recommendations": [
-            {
-              "action": "Add a quote from the founder about helping SMBs grow faster.",
-              "benefit": "Connects more directly to ICP (SMBs).",
-              "purpose": "Conversion",
-              "effort": "Easy",
-              "impact": "Medium"
-            },
-            {
-              "action": "Consider showing more team faces or quotes to make brand feel more approachable.",
-              "benefit": "Strengthens personal connection.",
-              "purpose": "Trust",
-              "effort": "Medium",
-              "impact": "Medium"
-            }
-          ],
-          "score": 40
-        },
-        "emotional_back_story": {
-          "whatsWorking": [
-            "The founder section gives some personal backstory about their experience."
-          ],
-          "whatsMissing": [
-            "No clear emotional pain or struggle presented that connects deeply with ICP.",
-            "Doesn’t directly mention problems like low trial-to-paid conversions from the founder’s journey.",
-            "Lacks narrative that shows why traditional audit tools failed for small businesses."
-          ],
-          "recommendations": [
-            {
-              "action": "Include more emotional story details on why the founder created the tool.",
-              "benefit": "Creates emotional resonance with struggling SMBs.",
-              "purpose": "Trust",
-              "effort": "Medium",
-              "impact": "High"
-            },
-            {
-              "action": "Tie the founder’s story into solving low trial-to-paid conversion challenges.",
-              "benefit": "Aligns pain point with ICP path more directly.",
-              "purpose": "Clarity",
-              "effort": "Medium",
-              "impact": "High"
-            }
-          ],
-          "score": 25
-        },
-        "weighted_score": 34
-      }
-    },
-    {
-      "conversion": {
-        "summary": "The landing page has a clear and focused call-to-action strategy, with repeated buttons like 'Start Free Audit' that are easy to see and act upon. This resonates well with the SMB target audience aiming to improve conversions. However, the copy doesn't fully emphasize the unique selling point of 'faster onboarding' or directly connect the CTA to the pain point of low trial-to-paid conversion. Incentives are present but could be stronger. The page doesn't mention things like 'no credit card needed' or deadlines to create urgency. These changes could help reduce risk perception and emphasize speed—which is a leverage point for SMBs evaluating onboarding-heavy tools.",
-        "call_to_action": {
-          "whatsWorking": [
-            "Primary CTA 'Start Free Audit' is clear and benefits-focused.",
-            "CTA placement appears consistently throughout the page.",
-            "Text focuses on improving conversions, aligning with ICP goal."
-          ],
-          "whatsMissing": [
-            "No microcopy to ease friction for hesitant users (e.g., 'Takes less than 5 mins').",
-            "CTA doesn't mention speed or ease as differentiators.",
-            "CTA not optimized for mobile visibility — placement is okay but could be more prominent."
-          ],
-          "recommendations": [
-            {
-              "action": "Add supporting microcopy like 'No credit card, results in minutes' near CTA buttons.",
-              "benefit": "Reduces perceived friction for SMBs.",
-              "purpose": "Conversion",
-              "effort": "Easy",
-              "impact": "High"
-            },
-            {
-              "action": "Highlight 'fast onboarding' within or near CTA (e.g., 'Quick Audit in Minutes').",
-              "benefit": "Reinforces key differentiator.",
-              "purpose": "Clarity",
-              "effort": "Easy",
-              "impact": "Medium"
-            },
-            {
-              "action": "Revisit mobile spacing/padding for CTA to assure it stands out more on small screens.",
-              "benefit": "Improves mobile usability.",
-              "purpose": "Conversion",
-              "effort": "Medium",
-              "impact": "Medium"
-            }
-          ],
-          "score": 78
-        },
-        "incentive_to_take_action": {
-          "whatsWorking": [
-            "Free audit offering reduces commitment instantly.",
-            "Copy reflects high-value insights with little effort."
-          ],
-          "whatsMissing": [
-            "No mention of 'no credit card' or limited-time incentive.",
-            "Missing urgency elements like countdowns or limited slots.",
-            "No explicit mention of refund, but expected since it's a free offer."
-          ],
-          "recommendations": [
-            {
-              "action": "Add urgency copy, like 'Limited slots weekly' or 'Only 5 audits left this week'.",
-              "benefit": "Encourages immediate action.",
-              "purpose": "Conversion",
-              "effort": "Easy",
-              "impact": "High"
-            },
-            {
-              "action": "Clarify zero-risk with phrase like 'No payment required — Ever.'",
-              "benefit": "Lowers hesitation for SMBs.",
-              "purpose": "Trust",
-              "effort": "Easy",
-              "impact": "Medium"
-            },
-            {
-              "action": "Highlight outcome timeframe — e.g., 'Get insights in 24 hours'.",
-              "benefit": "Supports speed/differentiator.",
-              "purpose": "Clarity",
-              "effort": "Medium",
-              "impact": "High"
-            }
-          ],
-          "score": 65
-        },
-        "weighted_score": 71
-      }
+  // Fetch audit by jobId from URL, prefer server over navigation state
+  useEffect(() => {
+    const jobId = searchParams.get('jobId');
+    if (!jobId) {
+      setError('Missing jobId in URL');
+      setLoading(false);
+      return;
     }
-  ];
+    (async () => {
+      try {
+        setLoading(true);
+        const response = await auditService.getAudit(jobId);
+        // Accept either { data: ... } or raw object
+        const auditsInformation = (response as any)?.data ?? response;
+        setAuditData(auditsInformation);
+        setError(null);
+      } catch (e) {
+        setError('Failed to fetch audit data');
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [searchParams]);
 
-  // Transform the data from array format to object format
-  const transformedData = auditData.reduce((acc, item) => {
-    Object.keys(item).forEach(key => {
-      (acc as any)[key] = (item as any)[key];
-    });
-    console.log(acc);
-    return acc;
-  }, {} as any);
+  if (loading) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <div className="container mx-auto px-4 py-6 pt-12 max-w-7xl">
+          <div className="text-center mb-8">Loading audit...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !auditData) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <div className="container mx-auto px-4 py-6 pt-12 max-w-7xl">
+          <div className="text-center mb-8 text-red-600">{error || 'No audit data available'}</div>
+        </div>
+      </div>
+    );
+  }
+
+  // Use auditData directly since it's now a single object, not an array 
+  // || {
+  //   "Clarity": {
+  //     "summary": "Strong message but lacks clear ICP fit and ROI clarity",
+  //     "dream_outcome": {
+  //       "whatsWorking": [
+  //         "Headline promises conversion improvement",
+  //         "Subheadline hints at smart audit solution",
+  //         "Visuals preview audit dashboard",
+  //         "Testimonials highlight user satisfaction"
+  //       ],
+  //       "whatsMissing": [
+  //         "Target customer (SMBs) is not mentioned clearly in headline/subheadline",
+  //         "No quantified results or metrics are shown",
+  //         "Pain point of 'low trial-to-paid' not directly mentioned or solved",
+  //         "Faster onboarding as a unique differentiator is not emphasized"
+  //       ],
+  //       "recommendations": [
+  //         {
+  //           "action": "Include 'for SaaS SMBs' in the headline or subheadline",
+  //           "purpose": "Clarity",
+  //           "effort": "Easy",
+  //           "impact": "High"
+  //         },
+  //         {
+  //           "action": "Add a clear before-after comparison for conversion rates",
+  //           "purpose": "Trust",
+  //           "effort": "Medium",
+  //           "impact": "Medium"
+  //         },
+  //         {
+  //           "action": "Highlight 'low trial-to-paid' conversion issue in subheadline or body copy",
+  //           "purpose": "Clarity",
+  //           "effort": "Easy",
+  //           "impact": "High"
+  //         },
+  //         {
+  //           "action": "Emphasize 'faster onboarding' in a value prop section or visual",
+  //           "purpose": "Conversion",
+  //           "effort": "Medium",
+  //           "impact": "High"
+  //         }
+  //       ],
+  //       "score": 45
+  //     },
+  //     "time_&_effort": {
+  //       "whatsWorking": [
+  //         "3-step audit process clearly shown",
+  //         "Mentions automation and ready-to-use insights",
+  //         "Visual shows quick input and output structure"
+  //       ],
+  //       "whatsMissing": [
+  //         "No specific time to result mentioned (e.g., 'in 24 hours')",
+  //         "Setup time is not clearly stated",
+  //         "No comparison with manual audits or competing tools",
+  //         "Faster onboarding benefit not linked to process copy"
+  //       ],
+  //       "recommendations": [
+  //         {
+  //           "action": "Add line like 'Get your conversion report in under 30 minutes'",
+  //           "purpose": "Clarity",
+  //           "effort": "Easy",
+  //           "impact": "Medium"
+  //         },
+  //         {
+  //           "action": "Compare ConvertAudit setup speed to traditional audits",
+  //           "purpose": "Trust",
+  //           "effort": "Medium",
+  //           "impact": "Medium"
+  //         },
+  //         {
+  //           "action": "Mention 'zero learning curve' or 'onboard in under 10 mins' benefit",
+  //           "purpose": "Conversion",
+  //           "effort": "Easy",
+  //           "impact": "High"
+  //         }
+  //       ],
+  //       "score": 55
+  //     },
+  //     "weighted_score": 50
+  //   },
+  //   "Trust": {
+  //     "summary": "Good trust signals, but deeper SMB-focused proof can boost relevance.",
+  //     "reviews_&_social_proof": {
+  //       "whatsWorking": [
+  //         "Multiple testimonials are visible.",
+  //         "Photos, names, and 5-star ratings are included.",
+  //         "Mentions of product effectiveness are present."
+  //       ],
+  //       "whatsMissing": [
+  //         "Testimonials don’t clearly reflect SMB profile.",
+  //         "No direct mention of improving trial-to-paid conversion.",
+  //         "No case studies showing quantifiable before/after results."
+  //       ],
+  //       "recommendations": [
+  //         {
+  //           "action": "Add testimonials from small to mid-sized business customers.",
+  //           "purpose": "Trust",
+  //           "effort": "Medium",
+  //           "impact": "High"
+  //         },
+  //         {
+  //           "action": "Include specific mentions of how ConvertAudit improved trial-to-paid rates.",
+  //           "purpose": "Conversion",
+  //           "effort": "Medium",
+  //           "impact": "High"
+  //         },
+  //         {
+  //           "action": "Add at least one testimonial with before/after metrics.",
+  //           "purpose": "Clarity",
+  //           "effort": "Medium",
+  //           "impact": "High"
+  //         }
+  //       ],
+  //       "score": 60
+  //     },
+  //     "trust_badges_&_eputation": {
+  //       "whatsWorking": [
+  //         "Strong visual ratings in testimonials enhance credibility."
+  //       ],
+  //       "whatsMissing": [
+  //         "No trust badges, compliance logos, or press features.",
+  //         "No external credibility proof tied to faster onboarding benefit."
+  //       ],
+  //       "recommendations": [
+  //         {
+  //           "action": "Add recognized trust badges or software review site logos (e.g., G2, Capterra).",
+  //           "purpose": "Trust",
+  //           "effort": "Easy",
+  //           "impact": "Medium"
+  //         },
+  //         {
+  //           "action": "Include an award, press feature, or certification if available.",
+  //           "purpose": "Trust",
+  //           "effort": "Medium",
+  //           "impact": "High"
+  //         },
+  //         {
+  //           "action": "Highlight a stat or badge related to ‘faster onboarding’ benefit if possible.",
+  //           "purpose": "Conversion",
+  //           "effort": "Medium",
+  //           "impact": "High"
+  //         }
+  //       ],
+  //       "score": 20
+  //     },
+  //     "personality_&_face": {
+  //       "whatsWorking": [
+  //         "Photo and friendly introduction of the founder are included.",
+  //         "Founder quote provides a clear mission tone."
+  //       ],
+  //       "whatsMissing": [
+  //         "No team or culture visuals, missing a broader personal feel."
+  //       ],
+  //       "recommendations": [
+  //         {
+  //           "action": "Show more behind-the-scenes/team visuals to connect further with SMB founders.",
+  //           "purpose": "Trust",
+  //           "effort": "Medium",
+  //           "impact": "Medium"
+  //         },
+  //         {
+  //           "action": "Add a short personal anecdote from the founder tied to helping SMBs convert easier.",
+  //           "purpose": "Conversion",
+  //           "effort": "Medium",
+  //           "impact": "High"
+  //         }
+  //       ],
+  //       "score": 40
+  //     },
+  //     "emotional_back_story": {
+  //       "whatsWorking": [
+  //         "Story from the founder explains why the tool exists.",
+  //         "Mentions frustration solving conversion clarity problems."
+  //       ],
+  //       "whatsMissing": [
+  //         "No mention of SMBs or messaging directly tied to trial-to-paid upgrade challenges.",
+  //         "Emotional narrative could be stronger or more personal."
+  //       ],
+  //       "recommendations": [
+  //         {
+  //           "action": "Mention an example of helping an SMB overcome trial-to-paid friction.",
+  //           "purpose": "Conversion",
+  //           "effort": "Medium",
+  //           "impact": "High"
+  //         },
+  //         {
+  //           "action": "Deepen the founder’s story with a specific pain moment and outcome.",
+  //           "purpose": "Trust",
+  //           "effort": "Medium",
+  //           "impact": "Medium"
+  //         }
+  //       ],
+  //       "score": 35
+  //     },
+  //     "weighted_score": 38.75
+  //   },
+  //   "Conversion": {
+  //     "summary": "CTA is clear but lacks urgency and doesn't highlight fast results.",
+  //     "call_to_action": {
+  //       "whatsWorking": [
+  //         "CTA button copy 'Start free audit' is simple and action-driven.",
+  //         "CTA appears multiple times, including hero section and footer."
+  //       ],
+  //       "whatsMissing": [
+  //         "CTA does not emphasize benefit like faster onboarding or improved conversions.",
+  //         "No tailored language addressing SMBs or their trial-to-paid pain."
+  //       ],
+  //       "recommendations": [
+  //         {
+  //           "action": "Add benefit-driven wording like 'Start free audit and boost signups today'.",
+  //           "purpose": "Conversion",
+  //           "effort": "Easy",
+  //           "impact": "High"
+  //         },
+  //         {
+  //           "action": "Include phrasing that reflects ICP pain point like 'Fix trial-to-paid drop-off now'.",
+  //           "purpose": "Clarity",
+  //           "effort": "Easy",
+  //           "impact": "Medium"
+  //         },
+  //         {
+  //           "action": "Emphasize speed of seeing value in CTA (e.g., 'Get quick insights in minutes').",
+  //           "purpose": "Clarity",
+  //           "effort": "Easy",
+  //           "impact": "High"
+  //         }
+  //       ],
+  //       "score": 70
+  //     },
+  //     "incentive_to_take_action": {
+  //       "whatsWorking": [
+  //         "Free audit is clearly offered – low barrier to entry.",
+  //         "No mention of credit card needed implies low friction, though not stated."
+  //       ],
+  //       "whatsMissing": [
+  //         "No urgency or limited-time incentive presented.",
+  //         "No mention of refund policy or cancellation in case of paid upgrade.",
+  //         "No language reinforcing fast onboarding/value realization, despite being the core differentiator."
+  //       ],
+  //       "recommendations": [
+  //         {
+  //           "action": "Add line below CTA that reads 'Takes less than 5 minutes. No credit card needed.'",
+  //           "purpose": "Trust",
+  //           "effort": "Easy",
+  //           "impact": "Medium"
+  //         },
+  //         {
+  //           "action": "Include urgency like 'Only 20 free audits/week – grab yours now!'",
+  //           "purpose": "Conversion",
+  //           "effort": "Medium",
+  //           "impact": "High"
+  //         },
+  //         {
+  //           "action": "Emphasize speed with copy like 'See results in under 24 hours'.",
+  //           "purpose": "Clarity",
+  //           "effort": "Easy",
+  //           "impact": "High"
+  //         }
+  //       ],
+  //       "score": 55
+  //     },
+  //     "weighted_score": 63
+  //   },
+  //   "overall_score_estimate": 50.58,
+  //   "summary_comment": "ConvertAudit shows strong foundational messaging and solid conversion potential with a free CTA and user testimonials. However, it needs clearer focus on its ICP (SaaS SMBs), quantified results, and stronger urgency signals. Adding proof points and amplifying the unique faster onboarding benefit will significantly increase trust and drive action."
+  // };
+  // Derive report payload flexibly: supports object or JSON string
+  let rawPayload: any = (auditData as any)?.payloadJson ?? (typeof auditData === 'string' ? auditData : location.state?.auditData);
+  if (typeof rawPayload === 'string') {
+    try {
+      rawPayload = JSON.parse(rawPayload);
+    } catch (_e) {
+      rawPayload = {};
+    }
+  }
+  const transformedData: any = rawPayload || {};
 
   // Calculate overall score from weighted scores
   const overallScore = Math.round(
-    (transformedData.usp?.weighted_score +
-      transformedData.trust?.weighted_score +
-      transformedData.conversion?.weighted_score) / 3
+    (Math.round(transformedData.Clarity?.weighted_score || 0) +
+      Math.round(transformedData.Trust?.weighted_score || 0) +
+      Math.round(transformedData.Conversion?.weighted_score || 0)) / 3
   );
 
   // Determine color and title based on score
@@ -365,12 +421,12 @@ const AuditReport = () => {
   };
 
   const categoryToPurpose: Record<string, string> = {
-    usp: "Clarity",
-    trust: "Trust",
-    conversion: "Conversion",
+    Clarity: "Clarity",
+    Trust: "Trust",
+    Conversion: "Conversion",
   };
 
-  const allRecommendations = ["usp", "trust", "conversion"].flatMap((categoryKey) => {
+  const allRecommendations = ["Clarity", "Trust", "Conversion"].flatMap((categoryKey) => {
     const category: any = (transformedData as any)?.[categoryKey] || {};
     return Object.keys(category).flatMap((subKey) => {
       const subsection = category[subKey];
@@ -396,12 +452,12 @@ const AuditReport = () => {
         {/* Header Section */}
         <div className="text-center mb-8">
           <h1 className="text-2xl text-h6 text-darkBG mb-2">
-            Audit result for serrand.co.uk
+            Audit result for {formatDisplayUrl(auditData.url)}
           </h1>
           <div className="inline-flex items-center gap-1 text-title-18
            text-dark-bg border border-dark-bg rounded px-2 py-1">
             <Clock className="w-5 h-5" />
-            <span>28/07/2025</span>
+            <span>{formatDate(auditData.createdAt)}</span>
           </div>
         </div>
 
@@ -439,16 +495,15 @@ const AuditReport = () => {
 
           <h2 className="text-2xl font-bold text-dark-bg mb-6">{mainScoreInfo.title}</h2>
           <p className="text-dark-bg text-title-18 mx-auto max-w-[600px]">
-            Your Clarity is solid. Now boost conversions by adding urgency,
-            emotional trust, and clearer audience targeting.
+            {transformedData.summary_comment}
           </p>
         </div>
 
         {/* Score Breakdown */}
         <div className="flex justify-center items-center space-x-[134px] mb-12">
-          <CircularProgress value={transformedData.usp?.weighted_score || 0} label="Clarity" />
-          <CircularProgress value={transformedData.trust?.weighted_score || 0} label="Trust" />
-          <CircularProgress value={transformedData.conversion?.weighted_score || 0} label="Conversion" />
+          <CircularProgress value={Math.round(transformedData.Clarity?.weighted_score || 0)} label="Clarity" />
+          <CircularProgress value={Math.round(transformedData.Trust?.weighted_score || 0)} label="Trust" />
+          <CircularProgress value={Math.round(transformedData.Conversion?.weighted_score || 0)} label="Conversion" />
         </div>
 
         {/* Layout with Sidebar Navigation */}
@@ -466,9 +521,9 @@ const AuditReport = () => {
                       transition-colors bg-dark-bg-50 hover: cursor-pointer`}
                   >
                     <span className="text-title-18 text-dark-bg">Clarity</span>
-                    <img 
-                      src={arrowDownIcon} 
-                      alt="arrow" 
+                    <img
+                      src={arrowDownIcon}
+                      alt="arrow"
                       className={`w-6 h-6 transition-transform ${activeSection === "clarity" ? "-rotate-180" : ""
                         }`}
                     />
@@ -479,17 +534,17 @@ const AuditReport = () => {
                     <div className="ml-4 mt-2 space-y-1">
                       <button
                         onClick={() => scrollToSection("dream-outcome")}
-                        className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
+                        className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-light-bg-200 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Dream Outcome</span>
-                        
+
                       </button>
                       <button
                         onClick={() => scrollToSection("time-delay-effort")}
-                        className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
+                        className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-light-bg-200 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Time Delay & Effort</span>
-                        
+
                       </button>
                     </div>
                   )}
@@ -503,9 +558,9 @@ const AuditReport = () => {
                       transition-colors bg-dark-bg-50 hover: cursor-pointer`}
                   >
                     <span className="text-title-18 text-dark-bg">Trust</span>
-                    <img 
-                      src={arrowDownIcon} 
-                      alt="arrow" 
+                    <img
+                      src={arrowDownIcon}
+                      alt="arrow"
                       className={`w-6 h-6 transition-transform ${activeSection === "trust" ? "-rotate-180" : ""
                         }`}
                     />
@@ -515,25 +570,25 @@ const AuditReport = () => {
                     <div className="ml-4 mt-2 space-y-1">
                       <button
                         onClick={() => scrollToSection("reviews_&_social_proof")}
-                        className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
+                        className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-light-bg-200 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Reviews & Social Proof</span>
                       </button>
                       <button
                         onClick={() => scrollToSection("trust_badges_&_eputation")}
-                        className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
+                        className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-light-bg-200 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Trust Badges & Reputation</span>
                       </button>
                       <button
                         onClick={() => scrollToSection("personality_&_face")}
-                        className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
+                        className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-light-bg-200 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Personality & Face</span>
                       </button>
                       <button
                         onClick={() => scrollToSection("emotional_back_story")}
-                        className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
+                        className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-light-bg-200 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Emotional Back Story</span>
                       </button>
@@ -549,9 +604,9 @@ const AuditReport = () => {
                       transition-colors bg-dark-bg-50 hover: cursor-pointer`}
                   >
                     <span className="text-title-18 text-dark-bg">Conversion</span>
-                    <img 
-                      src={arrowDownIcon} 
-                      alt="arrow" 
+                    <img
+                      src={arrowDownIcon}
+                      alt="arrow"
                       className={`w-6 h-6 transition-transform ${activeSection === "conversion" ? "-rotate-180" : ""
                         }`}
                     />
@@ -561,13 +616,13 @@ const AuditReport = () => {
                     <div className="ml-4 mt-2 space-y-1">
                       <button
                         onClick={() => scrollToSection("call_to_action")}
-                        className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
+                        className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-light-bg-200 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Call to Action</span>
                       </button>
                       <button
                         onClick={() => scrollToSection("incentive_to_take_action")}
-                        className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-muted/50 text-sm text-muted-foreground"
+                        className="w-full flex items-center justify-between p-2 text-left rounded-lg transition-colors hover:bg-light-bg-200 text-sm text-muted-foreground"
                       >
                         <span className="text-body-lg text-dark-bg">Incentive to Take Action</span>
                       </button>
@@ -584,24 +639,24 @@ const AuditReport = () => {
             <SectionWithSubsections
               id="clarity"
               title="Clarity"
-              score={transformedData.usp?.weighted_score || 0}
-              description={transformedData.usp?.summary}
+              score={Math.round(transformedData.Clarity?.weighted_score || 0)}
+              description={transformedData.Clarity?.summary}
               subsections={[
                 {
                   id: "dream-outcome",
                   title: "Dream Outcome",
-                  score: transformedData.usp?.dream_outcome?.score || 0,
-                  workingWell: transformedData.usp?.dream_outcome?.whatsWorking,
-                  missing: transformedData.usp?.dream_outcome?.whatsMissing,
-                  recommendations: transformedData.usp?.dream_outcome?.recommendations?.map((rec: any) => rec.action)
+                  score: Math.round(transformedData.Clarity?.dream_outcome?.score || 0),
+                  workingWell: transformedData.Clarity?.dream_outcome?.whatsWorking,
+                  missing: transformedData.Clarity?.dream_outcome?.whatsMissing,
+                  recommendations: transformedData.Clarity?.dream_outcome?.recommendations?.map((rec: any) => rec.action)
                 },
                 {
                   id: "time-delay-effort",
                   title: "Time Delay & Effort",
-                  score: transformedData.usp?.["time_&_effort"]?.score || 0,
-                  workingWell: transformedData.usp?.["time_&_effort"]?.whatsWorking,
-                  missing: transformedData.usp?.["time_&_effort"]?.whatsMissing,
-                  recommendations: transformedData.usp?.["time_&_effort"]?.recommendations?.map((rec: any) => rec.action)
+                  score: Math.round(transformedData.Clarity?.["time_&_effort"]?.score || 0),
+                  workingWell: transformedData.Clarity?.["time_&_effort"]?.whatsWorking,
+                  missing: transformedData.Clarity?.["time_&_effort"]?.whatsMissing,
+                  recommendations: transformedData.Clarity?.["time_&_effort"]?.recommendations?.map((rec: any) => rec.action)
                 }
               ]}
               showMainDescription={true}
@@ -609,44 +664,44 @@ const AuditReport = () => {
               mainProgressSize="lg"
             />
 
-            {/* Clarity Section with Subsections */}
+            {/* Trust Section with Subsections */}
             <SectionWithSubsections
               id="trust"
               title="Trust"
-              score={transformedData.trust?.weighted_score || 0}
-              description={transformedData.trust?.summary}
+              score={Math.round(transformedData.Trust?.weighted_score || 0)}
+              description={transformedData.Trust?.summary}
               subsections={[
                 {
                   id: "reviews_&_social_proof",
                   title: "Reviews & Social Proof",
-                  score: transformedData.trust?.["reviews_&_social_proof"]?.score || 0,
-                  workingWell: transformedData.trust?.["reviews_&_social_proof"]?.whatsWorking,
-                  missing: transformedData.trust?.["reviews_&_social_proof"]?.whatsMissing,
-                  recommendations: transformedData.trust?.["reviews_&_social_proof"]?.recommendations?.map((rec: any) => rec.action)
+                  score: Math.round(transformedData.Trust?.["reviews_&_social_proof"]?.score || 0),
+                  workingWell: transformedData.Trust?.["reviews_&_social_proof"]?.whatsWorking,
+                  missing: transformedData.Trust?.["reviews_&_social_proof"]?.whatsMissing,
+                  recommendations: transformedData.Trust?.["reviews_&_social_proof"]?.recommendations?.map((rec: any) => rec.action)
                 },
                 {
                   id: "trust_badges_&_eputation",
                   title: "Trust Badges & Reputation",
-                  score: transformedData.trust?.["trust_badges_&_eputation"]?.score || 0,
-                  workingWell: transformedData.trust?.["trust_badges_&_eputation"]?.whatsWorking,
-                  missing: transformedData.trust?.["trust_badges_&_eputation"]?.whatsMissing,
-                  recommendations: transformedData.trust?.["trust_badges_&_eputation"]?.recommendations?.map((rec: any) => rec.action)
+                  score: Math.round(transformedData.Trust?.["trust_badges_&_eputation"]?.score || 0),
+                  workingWell: transformedData.Trust?.["trust_badges_&_eputation"]?.whatsWorking,
+                  missing: transformedData.Trust?.["trust_badges_&_eputation"]?.whatsMissing,
+                  recommendations: transformedData.Trust?.["trust_badges_&_eputation"]?.recommendations?.map((rec: any) => rec.action)
                 },
                 {
                   id: "personality_&_face",
                   title: "Personality & Face",
-                  score: transformedData.trust?.["personality_&_face"]?.score || 0,
-                  workingWell: transformedData.trust?.["personality_&_face"]?.whatsWorking,
-                  missing: transformedData.trust?.["personality_&_face"]?.whatsMissing,
-                  recommendations: transformedData.trust?.["personality_&_face"]?.recommendations?.map((rec: any) => rec.action)
+                  score: Math.round(transformedData.Trust?.["personality_&_face"]?.score || 0),
+                  workingWell: transformedData.Trust?.["personality_&_face"]?.whatsWorking,
+                  missing: transformedData.Trust?.["personality_&_face"]?.whatsMissing,
+                  recommendations: transformedData.Trust?.["personality_&_face"]?.recommendations?.map((rec: any) => rec.action)
                 },
                 {
                   id: "emotional_back_story",
                   title: "Emotional Back Story",
-                  score: transformedData.trust?.["emotional_back_story"]?.score || 0,
-                  workingWell: transformedData.trust?.["emotional_back_story"]?.whatsWorking,
-                  missing: transformedData.trust?.["emotional_back_story"]?.whatsMissing,
-                  recommendations: transformedData.trust?.["emotional_back_story"]?.recommendations?.map((rec: any) => rec.action)
+                  score: Math.round(transformedData.Trust?.["emotional_back_story"]?.score || 0),
+                  workingWell: transformedData.Trust?.["emotional_back_story"]?.whatsWorking,
+                  missing: transformedData.Trust?.["emotional_back_story"]?.whatsMissing,
+                  recommendations: transformedData.Trust?.["emotional_back_story"]?.recommendations?.map((rec: any) => rec.action)
                 }
               ]}
               showMainDescription={true}
@@ -658,24 +713,24 @@ const AuditReport = () => {
             <SectionWithSubsections
               id="conversion"
               title="Conversion"
-              score={transformedData.conversion?.weighted_score || 0}
-              description={transformedData.conversion?.summary}
+              score={Math.round(transformedData.Conversion?.weighted_score || 0)}
+              description={transformedData.Conversion?.summary}
               subsections={[
                 {
                   id: "call_to_action",
                   title: "Call to Action",
-                  score: transformedData.conversion?.["call_to_action"]?.score || 0,
-                  workingWell: transformedData.conversion?.["call_to_action"]?.whatsWorking,
-                  missing: transformedData.conversion?.["call_to_action"]?.whatsMissing,
-                  recommendations: transformedData.conversion?.["call_to_action"]?.recommendations?.map((rec: any) => rec.action)
+                  score: Math.round(transformedData.Conversion?.["call_to_action"]?.score || 0),
+                  workingWell: transformedData.Conversion?.["call_to_action"]?.whatsWorking,
+                  missing: transformedData.Conversion?.["call_to_action"]?.whatsMissing,
+                  recommendations: transformedData.Conversion?.["call_to_action"]?.recommendations?.map((rec: any) => rec.action)
                 },
                 {
                   id: "incentive_to_take_action",
                   title: "Incentive to Take Action",
-                  score: transformedData.conversion?.["incentive_to_take_action"]?.score || 0,
-                  workingWell: transformedData.conversion?.["incentive_to_take_action"]?.whatsWorking,
-                  missing: transformedData.conversion?.["incentive_to_take_action"]?.whatsMissing,
-                  recommendations: transformedData.conversion?.["incentive_to_take_action"]?.recommendations?.map((rec: any) => rec.action)
+                  score: Math.round(transformedData.Conversion?.["incentive_to_take_action"]?.score || 0),
+                  workingWell: transformedData.Conversion?.["incentive_to_take_action"]?.whatsWorking,
+                  missing: transformedData.Conversion?.["incentive_to_take_action"]?.whatsMissing,
+                  recommendations: transformedData.Conversion?.["incentive_to_take_action"]?.recommendations?.map((rec: any) => rec.action)
                 }
               ]}
               showMainDescription={true}

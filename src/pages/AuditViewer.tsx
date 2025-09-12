@@ -3,6 +3,7 @@ import { useAuditSSE } from "@/hooks/useAuditSSE";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
+import CircularProgress from "@/components/CircularProgress";
 import { Button } from "@/components/ui/button";
 
 export default function AuditViewer() {
@@ -24,33 +25,58 @@ export default function AuditViewer() {
 
   // e.g., set jobId after BE returns it from POST /api/audits
   const { latest, events, connectionStatus } = useAuditSSE(
-    jobId ? `${import.meta.env.VITE_API_BASE_URL}/api/audits/stream/${jobId}` : undefined
+    jobId ? `${import.meta.env.VITE_API_BE_URL}/api/audits/stream/${jobId}` : undefined
   );
 
-  // Navigate to audit-report when audit is completed
+  // Navigate to audit-report when audit is completed (fetch happens in AuditReport)
   useEffect(() => {
     if (latest && latest.type === 'completed') {
-      try {
-        // Parse the result if it's a string
-        const parsedResult = typeof latest.result === 'string' 
-          ? JSON.parse(latest.result) 
-          : latest.result;
-        
-        // Navigate with the parsed result
-        // navigate(`/audit-report?jobId=${jobId}`, {
-        //   state: { result: parsedResult }
-        // });
-      } catch (error) {
-        console.error('Failed to parse result:', error);
-        // Navigate anyway, but without parsed result
-        // navigate(`/audit-report?jobId=${jobId}`);
-      }
+      navigate(`/audit-report?jobId=${jobId}`);
     }
   }, [latest, jobId, navigate]);
+
+  // Calculate progress based on connection status and events
+  const getProgress = () => {
+    if (!jobId) return 0;
+    if (connectionStatus === 'error') return 0;
+    if (connectionStatus === 'connecting') return 10;
+    if (connectionStatus === 'connected') {
+      if (events.length === 0) return 25;
+      if (events.length < 3) return 50;
+      if (events.length < 6) return 75;
+      if (latest && latest.type === 'completed') return 100;
+      return 90;
+    }
+    return 0;
+  };
+
+  const getProgressLabel = () => {
+    if (!jobId) return "Initializing...";
+    if (connectionStatus === 'error') return "Connection Error";
+    if (connectionStatus === 'connecting') return "Connecting...";
+    if (connectionStatus === 'connected') {
+      if (events.length === 0) return "Connected, waiting for data...";
+      if (events.length < 3) return "Processing audit data...";
+      if (events.length < 6) return "Analyzing results...";
+      if (latest && latest.type === 'completed') return "Audit Complete!";
+      return "Finalizing audit...";
+    }
+    return "Starting audit...";
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
+       {jobId && (        
+         <div className="flex justify-center py-8">
+           <div className="border border-gray-200 rounded-lg p-6 px-20 bg-white shadow-sm">
+             <CircularProgress 
+               value={getProgress()} 
+               label={getProgressLabel()} 
+             />
+           </div>
+         </div>
+       )}
       <div className="p-6 pt-32">
         <div className="max-w-4xl mx-auto">
           <div className="mb-6">

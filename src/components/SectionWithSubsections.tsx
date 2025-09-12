@@ -110,9 +110,9 @@ const SectionWithSubsections = ({
 
   return (
     <section id={id}>
-      <Card className="mt-0 ml-5 mb-10 rounded-2xl">
-        <CardHeader className="pb-4">
-          <div className="flex items-center gap-4">
+      <Card className="mt-0 ml-5 mb-10 rounded-2xl gap-10">
+        <CardHeader className="pb-0 gap-0">
+          <div className="flex items-center gap-4 mb-8">
             <div className={`relative ${mainSize.container}`}>
               <svg className={`${mainSize.container} transform -rotate-90`} viewBox={mainSize.viewBox}>
                 <circle
@@ -142,7 +142,7 @@ const SectionWithSubsections = ({
               </div>
             </div>
             <div>
-              <CardTitle className="text-2xl mb-2" >{title}</CardTitle>
+              <CardTitle className="font-bold text-dark-bg text-2xl mb-2" >{title}</CardTitle>
               {showMainDescription && description && (
                 <p className="text-muted-foreground mb-6">
                   {description}
@@ -150,10 +150,9 @@ const SectionWithSubsections = ({
               )}
             </div>
           </div>
+          <div className="h-px w-full bg-dark-bg-50 mx-auto" />
         </CardHeader>
-        <CardContent className="space-y-8">
-
-
+        <CardContent className="space-y-10">
           {/* Subsections */}
           {subsections.map((subsection) => {
             const subsectionScoreInfo = getScoreInfo(subsection.score);

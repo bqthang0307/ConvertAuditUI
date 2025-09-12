@@ -8,11 +8,13 @@ import addCircle from "@/assets/Icon/add-circle.svg";
 
 const Header = () => {
   // const { theme, setTheme } = useTheme();
-
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
   return (
     <header className="flex items-center justify-between px-25 py-3 bg-card border-b border-border">
       <div className="flex items-center gap-2">
-        <img src={logo} alt="ConvertAudit" className="w-40.25 h-9.25 py-4.625 hover:cursor-pointer " />
+        <a href={baseUrl}>
+          <img src={logo} alt="ConvertAudit" className="w-40.25 h-9.25 py-4.625 hover:cursor-pointer"/>
+        </a>
       </div>
 
       <nav className="flex items-center gap-6">
