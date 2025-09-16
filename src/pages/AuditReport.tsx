@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Clock } from "lucide-react";
+import { Clock, Menu, X } from "lucide-react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import arrowDownIcon from "@/assets/Icon/arrow-down.svg";
-// import AuditSection from "@/components/AuditSection";
 import SectionWithSubsections from "@/components/SectionWithSubsections";
 import CircularProgress from "@/components/CircularProgress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -17,6 +16,8 @@ const AuditReport = () => {
   const [auditData, setAuditData] = useState<any | null>(location.state?.auditData ?? null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showMobileNav, setShowMobileNav] = useState(false);
 
   const formatDate = (isoString?: string) => {
     if (!isoString) return "";
@@ -67,11 +68,32 @@ const AuditReport = () => {
     })();
   }, [searchParams]);
 
+  // Scroll detection for mobile navigation visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      const scoreBreakdownElement = document.querySelector('[data-section="score-breakdown"]');
+      if (scoreBreakdownElement) {
+        const rect = scoreBreakdownElement.getBoundingClientRect();
+        // Show mobile nav when score breakdown is scrolled past (bottom of element is above viewport)
+        const shouldShow = rect.bottom < 0;
+        setShowMobileNav(shouldShow);
+        
+        // Close mobile menu if user scrolls back up past score breakdown
+        if (!shouldShow && isMobileMenuOpen) {
+          setIsMobileMenuOpen(false);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isMobileMenuOpen]);
+
   if (loading) {
     return (
       <div className="min-h-screen">
         <Header />
-        <div className="container mx-auto px-4 py-6 pt-12 max-w-7xl">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 pt-12 max-w-7xl">
           <div className="text-center mb-8">Loading audit...</div>
         </div>
       </div>
@@ -82,7 +104,7 @@ const AuditReport = () => {
     return (
       <div className="min-h-screen">
         <Header />
-        <div className="container mx-auto px-4 py-6 pt-12 max-w-7xl">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 pt-12 max-w-7xl">
           <div className="text-center mb-8 text-red-600">{error || 'No audit data available'}</div>
         </div>
       </div>
@@ -448,23 +470,125 @@ const AuditReport = () => {
   return (
     <div className="min-h-screen">
       <Header />
-      <div className="container mx-auto px-4 py-6 pt-12 max-w-7xl">
+      {/* Mobile hamburger trigger */}
+      {showMobileNav && (
+        <button
+          aria-label="Open navigation"
+          onClick={() => setIsMobileMenuOpen(true)}
+          className="lg:hidden fixed top-3 left-3 z-50 w-9 h-9 rounded-full bg-card/80 backdrop-blur border border-border flex items-center justify-center"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+      )}
+
+      {/* Mobile Nav Overlay */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 z-50">
+          <div
+            className="fixed inset-0 bg-black/20"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          <div className="fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-card border-r border-border shadow-lg">
+            <div className="flex items-center justify-between p-4 border-b border-border">
+              <h2 className="text-lg font-semibold">Menu</h2>
+              <button
+                aria-label="Close navigation"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="w-8 h-8 inline-flex items-center justify-center"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <nav className="flex flex-col p-4 space-y-2">
+              <button
+                onClick={() => {
+                  setActiveSection(activeSection === "clarity" ? "" : "clarity");
+                }}
+                className={`w-full flex items-center justify-between p-3 text-left rounded-lg transition-colors bg-dark-bg-50`}
+              >
+                <span className="text-title-18 text-dark-bg">Clarity</span>
+                <img src={arrowDownIcon} alt="arrow" className={`w-6 h-6`} />
+              </button>
+              {activeSection === "clarity" && (
+                <div className="ml-4 mt-1 space-y-1">
+                  <button
+                    onClick={() => { scrollToSection("dream-outcome"); setIsMobileMenuOpen(false); }}
+                    className="w-full p-2 text-left rounded-lg transition-colors hover:bg-light-bg-200 text-sm text-muted-foreground"
+                  >
+                    <span className="text-body-lg text-dark-bg">Dream Outcome</span>
+                  </button>
+                  <button
+                    onClick={() => { scrollToSection("time-delay-effort"); setIsMobileMenuOpen(false); }}
+                    className="w-full p-2 text-left rounded-lg transition-colors hover:bg-light-bg-200 text-sm text-muted-foreground"
+                  >
+                    <span className="text-body-lg text-dark-bg">Time Delay & Effort</span>
+                  </button>
+                </div>
+              )}
+
+              <button
+                onClick={() => { setActiveSection(activeSection === "trust" ? "" : "trust"); }}
+                className={`w-full flex items-center justify-between p-3 text-left rounded-lg transition-colors bg-dark-bg-50`}
+              >
+                <span className="text-title-18 text-dark-bg">Trust</span>
+                <img src={arrowDownIcon} alt="arrow" className={`w-6 h-6`} />
+              </button>
+              {activeSection === "trust" && (
+                <div className="ml-4 mt-1 space-y-1">
+                  <button onClick={() => { scrollToSection("reviews_&_social_proof"); setIsMobileMenuOpen(false); }} className="w-full p-2 text-left rounded-lg hover:bg-light-bg-200 text-sm text-muted-foreground">
+                    <span className="text-body-lg text-dark-bg">Reviews & Social Proof</span>
+                  </button>
+                  <button onClick={() => { scrollToSection("trust_badges_&_eputation"); setIsMobileMenuOpen(false); }} className="w-full p-2 text-left rounded-lg hover:bg-light-bg-200 text-sm text-muted-foreground">
+                    <span className="text-body-lg text-dark-bg">Trust Badges & Reputation</span>
+                  </button>
+                  <button onClick={() => { scrollToSection("personality_&_face"); setIsMobileMenuOpen(false); }} className="w-full p-2 text-left rounded-lg hover:bg-light-bg-200 text-sm text-muted-foreground">
+                    <span className="text-body-lg text-dark-bg">Personality & Face</span>
+                  </button>
+                  <button onClick={() => { scrollToSection("emotional_back_story"); setIsMobileMenuOpen(false); }} className="w-full p-2 text-left rounded-lg hover:bg-light-bg-200 text-sm text-muted-foreground">
+                    <span className="text-body-lg text-dark-bg">Emotional Back Story</span>
+                  </button>
+                </div>
+              )}
+
+              <button
+                onClick={() => { setActiveSection(activeSection === "conversion" ? "" : "conversion"); }}
+                className={`w-full flex items-center justify-between p-3 text-left rounded-lg transition-colors bg-dark-bg-50`}
+              >
+                <span className="text-title-18 text-dark-bg">Conversion</span>
+                <img src={arrowDownIcon} alt="arrow" className={`w-6 h-6`} />
+              </button>
+              {activeSection === "conversion" && (
+                <div className="ml-4 mt-1 space-y-1">
+                  <button onClick={() => { scrollToSection("call_to_action"); setIsMobileMenuOpen(false); }} className="w-full p-2 text-left rounded-lg hover:bg-light-bg-200 text-sm text-muted-foreground">
+                    <span className="text-body-lg text-dark-bg">Call to Action</span>
+                  </button>
+                  <button onClick={() => { scrollToSection("incentive_to_take_action"); setIsMobileMenuOpen(false); }} className="w-full p-2 text-left rounded-lg hover:bg-light-bg-200 text-sm text-muted-foreground">
+                    <span className="text-body-lg text-dark-bg">Incentive to Take Action</span>
+                  </button>
+                </div>
+              )}
+            </nav>
+          </div>
+        </div>
+      )}
+
+      <div className="container mx-auto px-6 sm:px-10 lg:px-12 py-6 pt-14.5 sm:pt-12 max-w-7xl">
         {/* Header Section */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl text-h6 text-darkBG mb-2">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-title-18 sm:text-h6 text-dark-bg mb-3">
             Audit result for {formatDisplayUrl(auditData.url)}
           </h1>
-          <div className="inline-flex items-center gap-1 text-title-18
+          <div className="inline-flex items-center gap-1 text-menu sm:text-title-18
            text-dark-bg border border-dark-bg rounded px-2 py-1">
-            <Clock className="w-5 h-5" />
+            <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
             <span>{formatDate(auditData.createdAt)}</span>
           </div>
         </div>
 
         {/* Main Score */}
-        <div className="text-center mb-10">
-          <div className="relative w-64 h-64 mx-auto mb-2.5">
-            <svg className="w-64 h-64 transform -rotate-90" viewBox="0 0 200 200">
+        <div className="text-center mb-8 sm:mb-10">
+          <div className="relative w-57.5 h-57.5 sm:w-56 sm:h-56 lg:w-64 lg:h-64 mx-auto mb-1.5 sm:mb-2.5">
+            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 200 200">
               <circle
                 cx="100"
                 cy="100"
@@ -488,29 +612,29 @@ const AuditReport = () => {
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-h6 text-dark-bg-300">Total score</span>
-              <span className="text-4xl font-bold text-dark-bg">{overallScore}%</span>
+              <span className="text-title-18 sm:text-h6 text-dark-bg-300">Total score</span>
+              <span className="text-h4 sm:text-h3 font-bold text-dark-bg">{overallScore}%</span>
             </div>
           </div>
 
-          <h2 className="text-2xl font-bold text-dark-bg mb-6">{mainScoreInfo.title}</h2>
-          <p className="text-dark-bg text-title-18 mx-auto max-w-[600px]">
+          <h2 className="text-h5 sm:text-h4 font-bold text-dark-bg mb-6">{mainScoreInfo.title}</h2>
+          <p className="text-dark-bg text-body-lg sm:text-title-18 mx-auto max-w-[600px]">
             {transformedData.summary_comment}
           </p>
         </div>
 
         {/* Score Breakdown */}
-        <div className="flex justify-center items-center space-x-[134px] mb-12">
+        <div data-section="score-breakdown" className="flex flex-col sm:flex-row sm:justify-center sm:items-center space-x-auto mb-8 sm:mb-12 mx-2">
           <CircularProgress value={Math.round(transformedData.Clarity?.weighted_score || 0)} label="Clarity" />
           <CircularProgress value={Math.round(transformedData.Trust?.weighted_score || 0)} label="Trust" />
           <CircularProgress value={Math.round(transformedData.Conversion?.weighted_score || 0)} label="Conversion" />
         </div>
 
         {/* Layout with Sidebar Navigation */}
-        <div className="flex">
+        <div className="flex flex-col lg:flex-row gap-6">
           {/* Left Navigation Sidebar */}
-          <div className="w-53 flex-shrink-0">
-            <div className="sticky top-8 bg-card border border-border rounded-2xl p-4">
+          <div className="hidden lg:block lg:w-53 lg:flex-shrink-0">
+            <div className="lg:sticky lg:top-8 bg-card border border-border rounded-2xl p-4">
               {/* Navigation Items */}
               <nav className="space-y-2">
                 {/* Clarity with nested items */}
@@ -634,7 +758,7 @@ const AuditReport = () => {
           </div>
 
           {/* Main Content Area */}
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             {/* Clarity Section with Subsections */}
             <SectionWithSubsections
               id="clarity"
@@ -741,31 +865,52 @@ const AuditReport = () => {
         </div>
 
         {/* Priority Recommendations */}
-        <div className="mt-16">
-          <h2 className="text-2xl font-bold text-foreground mb-8">Priority Recommendations</h2>
-          <div className="border border-border rounded-lg overflow-hidden">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="text-title-18 text-align-left text-dark-bg-300 pl-5">Recommendation</TableHead>
-                  <TableHead className="text-title-18 text-align-left text-dark-bg-300">Purpose</TableHead>
-                  <TableHead className="text-title-18 text-align-left text-dark-bg-300">Priority</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {sortedRecommendations.map((rec, idx) => (
-                  <TableRow key={`${rec.action}-${idx}`}>
-                    <TableCell className="text-menu py-4 pl-5">{rec.action}</TableCell>
-                    <TableCell><Badge variant="purpose" className="text-dark-bg-900">{rec.purpose}</Badge></TableCell>
-                    <TableCell>
-                      <span className={`inline-flex items-center justify-center rounded-md border border-transparent px-2 py-0.5 whitespace-nowrap ${getPriorityBadgeClass(rec.impact)}`}>
-                        {rec.impact || ""}
-                      </span>
-                    </TableCell>
+        <div className="mt-12 sm:mt-16">
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-6 sm:mb-8">Priority Recommendations</h2>
+          
+          {/* Desktop Table */}
+          <div className="hidden sm:block border border-border rounded-lg overflow-hidden">
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-sm sm:text-base text-align-left text-dark-bg-300 pl-3 sm:pl-5">Recommendation</TableHead>
+                    <TableHead className="text-sm sm:text-base text-align-left text-dark-bg-300">Purpose</TableHead>
+                    <TableHead className="text-sm sm:text-base text-align-left text-dark-bg-300">Priority</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {sortedRecommendations.map((rec, idx) => (
+                    <TableRow key={`${rec.action}-${idx}`}>
+                      <TableCell className="text-sm sm:text-base text-menu py-3 sm:py-4 pl-3 sm:pl-5 max-w-[600px] whitespace-normal break-words">{rec.action}</TableCell>
+                      <TableCell><Badge variant="purpose" className="text-dark-bg-900 text-xs sm:text-sm">{rec.purpose}</Badge></TableCell>
+                      <TableCell>
+                        <span className={`inline-flex items-center justify-center rounded-md border border-transparent px-2 py-0.5 whitespace-nowrap text-xs sm:text-sm ${getPriorityBadgeClass(rec.impact)}`}>
+                          {rec.impact || ""}
+                        </span>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+
+          {/* Mobile Cards */}
+          <div className="sm:hidden space-y-4">
+            {sortedRecommendations.map((rec, idx) => (
+              <div key={`${rec.action}-${idx}`} className="border border-border rounded-lg p-4 bg-card">
+                <div className="mb-3">
+                  <p className="text-sm text-menu whitespace-normal break-words">{rec.action}</p>
+                </div>
+                <div className="flex gap-4">
+                  <Badge variant="purpose" className="text-dark-bg-900 text-xs">{rec.purpose}</Badge>
+                  <span className={`inline-flex items-center justify-center rounded-md border border-transparent px-2 py-0.5 whitespace-nowrap text-xs ${getPriorityBadgeClass(rec.impact)}`}>
+                    {rec.impact || ""}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

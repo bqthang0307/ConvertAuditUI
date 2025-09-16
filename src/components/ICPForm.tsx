@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
@@ -209,12 +208,12 @@ const ICPForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-6">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 sm:p-6">
       <Card className="w-full max-w-2xl shadow-lg py-0">
-        <CardContent className="p-8">
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-foreground mb-2 font-sans leading-8 tracking-normal">
-              Help us understand your ICP so we can give <br/>better insights
+        <CardContent className="p-4 sm:p-6 lg:p-8">
+          <div className="text-center mb-6 sm:mb-8">
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-2 font-sans leading-6 sm:leading-8 tracking-normal">
+              Help us understand your ICP so we can give <br className="hidden sm:block"/>better insights
             </h1>
           </div>
 
@@ -222,12 +221,12 @@ const ICPForm = () => {
 
           {renderStepContent()}
 
-          <div className="flex gap-4 mt-8">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8">
             {currentStep > 1 && (
               <Button
                 onClick={handleBack}
                 variant="secondary"
-                className="flex-1 h-12 text-base font-medium hover:cursor-pointer"
+                className="flex-1 h-11 sm:h-12 text-sm sm:text-base font-medium hover:cursor-pointer order-2 sm:order-1"
               >
                 Back
               </Button>
@@ -235,7 +234,7 @@ const ICPForm = () => {
             <Button
               onClick={handleNext}
               variant="gradient"
-              className={`h-12 text-base font-medium hover:cursor-pointer ${currentStep === 1 ? 'w-full' : 'flex-1'}`}
+              className={`h-11 sm:h-12 text-sm sm:text-base font-medium hover:cursor-pointer ${currentStep === 1 ? 'w-full' : 'flex-1 order-1 sm:order-2'}`}
             >
               {currentStep === 3 ? 'Submit' : 'Next'}
             </Button>

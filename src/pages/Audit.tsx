@@ -98,12 +98,12 @@ const Audit = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <div className="flex items-center justify-center p-6 pt-32">
-        <Card className="w-full max-w-137.5 shadow-lg">
-          <CardContent className="p-8 pt-2">
-            <div className="text-center pb-8">
-              <h1 className="text-xl font-bold h-5 text-foreground mb-2 tracking-normal">
-                Let's create an audit for your <br />SaaS landing page!
+      <div className="flex items-center justify-center p-4 sm:p-6 sm:pt-32">
+        <Card className="w-full max-w-lg lg:max-w-2xl shadow-lg py-0">
+          <CardContent className="p-4 sm:p-6 lg:p-8 pt-2">
+            <div className="text-center pb-6 sm:pb-8">
+              <h1 className="text-lg sm:text-xl font-bold text-foreground mb-2 tracking-normal">
+                Let's create an audit for your <br className="hidden sm:block" />SaaS landing page!
               </h1>
             </div>
 
@@ -152,7 +152,7 @@ const Audit = () => {
             <Button
               onClick={handleSubmit}
               variant="gradient"
-              className="w-full h-12 text-base font-medium mt-8 hover:cursor-pointer"
+              className="w-full h-11 sm:h-12 text-sm sm:text-base font-medium mt-6 sm:mt-8 hover:cursor-pointer"
               disabled={loading}
             >
               {loading ? 'Submitting...' : 'Get my audit'}

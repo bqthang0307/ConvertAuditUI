@@ -40,7 +40,7 @@ const CircularProgress = ({ value, label }: CircularProgressProps) => {
   return (
     <div className="flex flex-col items-center space-y-3">
       <div className="relative w-46 h-46">
-        <svg className="w-46 h-46 transform -rotate-90" viewBox="0 0 100 100">
+        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
           <circle
             cx="50"
             cy="50"
@@ -68,7 +68,7 @@ const CircularProgress = ({ value, label }: CircularProgressProps) => {
         </div>
       </div>
       <div className="text-center">
-        <span className="text-h6 text-dark-bg">{label}</span>
+        <span className="text-title-18 sm:text-h6 text-dark-bg">{label}</span>
       </div>
     </div>
   );

@@ -110,9 +110,9 @@ const SectionWithSubsections = ({
 
   return (
     <section id={id}>
-      <Card className="mt-0 ml-5 mb-10 rounded-2xl gap-10">
+      <Card className="mt-0 mb-8 sm:mb-10 rounded-2xl gap-6 sm:gap-10 ml-0 sm:ml-5 mr-0">
         <CardHeader className="pb-0 gap-0">
-          <div className="flex items-center gap-4 mb-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
             <div className={`relative ${mainSize.container}`}>
               <svg className={`${mainSize.container} transform -rotate-90`} viewBox={mainSize.viewBox}>
                 <circle
@@ -138,43 +138,47 @@ const SectionWithSubsections = ({
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className={`text-h6 text-foreground`}>{score}%</span>
+                <span className={`text-title-18 sm:text-h6 text-foreground`}>{score}%</span>
               </div>
             </div>
-            <div>
-              <CardTitle className="font-bold text-dark-bg text-2xl mb-2" >{title}</CardTitle>
+            <div className="mt-2 sm:mt-0 w-full">
+              <h3 className="font-bold text-h6 sm:text-h5 !text-left text-dark-bg mb-2" >{title}</h3>
               {showMainDescription && description && (
-                <p className="text-muted-foreground mb-6">
+                <p className="text-muted-foreground">
                   {description}
                 </p>
               )}
             </div>
           </div>
+          {/* Add a divider between sections */}
           <div className="h-px w-full bg-dark-bg-50 mx-auto" />
         </CardHeader>
-        <CardContent className="space-y-10">
+        <CardContent className="space-y-6 sm:space-y-10">
           {/* Subsections */}
-          {subsections.map((subsection) => {
+          {subsections.map((subsection, index) => {
             const subsectionScoreInfo = getScoreInfo(subsection.score);
             const subsectionBadge = subsectionScoreInfo.badge;
+            const isLastItem = index === subsections.length - 1;
 
             return (
               <div id={subsection.id} key={subsection.id} >
-                <div className="flex items-center gap-4 mb-2">
-                  <div className="flex items-center justify-between w-full">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full gap-2 sm:gap-0">
                     <div>
-                      <h4 className="text-h6 text-dark-bg">{subsection.title}</h4>
+                      <h4 className="text-h6 !text-left text-dark-bg">{subsection.title}</h4>
                     </div>
                     {subsectionBadge && (
-                      <div className={`inline-flex items-center px-2 py-1 text-xs font-medium
-                        ${subsectionBadge.bgColor} ${subsectionBadge.textColor} rounded-sm border border-current`}>
-                        <LikeIcon 
-                          className="w-6 h-6 inline" 
-                          shouldRotate={subsectionBadge.text === "Poor" || subsectionBadge.text === "Failed"} 
-                        />
-                        <span className={`inline-flex items-center px-2 py-1 text-xs`}>
-                          {subsectionBadge.text}
-                        </span>
+                      <div className="flex justify-start sm:justify-end">
+                        <div className={`inline-flex items-center px-2 py-1 text-xs font-medium
+                          ${subsectionBadge.bgColor} ${subsectionBadge.textColor} rounded-sm border border-current`}>
+                          <LikeIcon 
+                            className="w-6 h-6 inline mr-1" 
+                            shouldRotate={subsectionBadge.text === "Poor" || subsectionBadge.text === "Failed"} 
+                          />
+                          <span className="text-xs">
+                            {subsectionBadge.text}
+                          </span>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -184,15 +188,15 @@ const SectionWithSubsections = ({
                   <span className={`text-title-18 text-primary-CTA inline`}>{subsection.score}%</span>
                 </div>
 
-                <div className="space-y-6">
+                <div className="space-y-5 sm:space-y-6">
                   {subsection.workingWell && subsection.workingWell.length > 0 && (
                     <div>
-                      <h5 className="mb-2 flex items-center text-title-18 text-dark-bg-300">
+                      <h5 className="mb-2 flex items-center text-menu sm:text-title-18 text-dark-bg-300">
                         What's working well:
                       </h5>
-                      <ul className="text-body-lg text-dark-bg-300 space-y-1 ml-6">
+                      <ul className="text-body-sm sm:text-body-lg text-dark-bg-300 space-y-1 ml-4 list-disc list-outside marker:text-lg">
                         {subsection.workingWell.map((item, index) => (
-                          <li key={index}>• {item}</li>
+                          <li key={index}>{item}</li>
                         ))}
                       </ul>
                     </div>
@@ -200,30 +204,32 @@ const SectionWithSubsections = ({
 
                   {subsection.missing && subsection.missing.length > 0 && (
                     <div>
-                      <h5 className="mb-2 flex items-center text-title-18 text-dark-bg-300">
+                      <h5 className="mb-2 flex items-center text-menu sm:text-title-18 text-dark-bg-300">
                         What's missing:
                       </h5>
-                      <ul className="text-body-lg text-dark-bg-300 space-y-1 ml-6">
+                      <ul className="text-body-sm sm:text-body-lg text-dark-bg-300 space-y-1 ml-4 list-disc list-outside marker:text-lg">
                         {subsection.missing.map((item, index) => (
-                          <li key={index}>• {item}</li>
+                          <li key={index}>{item}</li>
                         ))}
                       </ul>
                     </div>
                   )}
 
                   {subsection.recommendations && subsection.recommendations.length > 0 && (
-                    <div className="bg-excellent-50 border border-excellent-900/10 rounded-lg p-4">
-                      <h5 className="text-h6 mb-2 flex items-center gap-2 text-dark-bg">
+                    <div className="bg-excellent-50 border border-excellent-900/10 rounded-lg p-4 mb-10">
+                      <h5 className="text-title-18 sm:text-h6 mb-2 flex items-center gap-2 text-dark-bg">
                       <img src={tickIcon} className="w-6 h-6 border-dark-bg"/>
                         Recommendation
                       </h5>
-                      <ul className="text-body-lg text-dark-bg-300 space-y-1">
+                      <ul className="text-body-sm sm:text-body-lg text-dark-bg-300 space-y-1 ml-4 list-disc list-outside marker:text-lg">
                         {subsection.recommendations.map((item, index) => (
-                          <li key={index}>• {item}</li>
+                          <li key={index}>{item}</li>
                         ))}
                       </ul>
                     </div>
                   )}
+                  {/* Add a divider between subsections */}
+                  {!isLastItem && <div className="h-px w-full bg-dark-bg-50 mx-auto" />}
                 </div>
               </div>
             );
