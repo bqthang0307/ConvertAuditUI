@@ -90,7 +90,7 @@ const ICPForm = () => {
         return (
           <div className="space-y-6">
             <div>
-              <Label htmlFor="landingPageGoal" className="text-body-sm font-medium text-foreground mb-2 block">
+              <Label htmlFor="landingPageGoal" className="text-body-tiny-medium sm:text-body-sm font-medium text-foreground mb-2 block">
                 What's the main goal of this landing page?
               </Label>
               <Textarea
@@ -111,7 +111,7 @@ const ICPForm = () => {
             </div>
 
             <div>
-              <Label htmlFor="targetCustomer" className="text-body-sm font-medium text-foreground mb-2 block">
+              <Label htmlFor="targetCustomer" className="text-body-tiny-medium sm:text-body-sm font-medium text-foreground mb-2 block">
                 Who is your target customer?
               </Label>
               <Textarea
@@ -137,7 +137,7 @@ const ICPForm = () => {
         return (
           <div className="space-y-6">
             <div>
-              <Label htmlFor="painPoint" className="text-body-sm font-medium text-foreground mb-2 block">
+              <Label htmlFor="painPoint" className="text-body-tiny-medium sm:text-body-sm font-medium text-foreground mb-2 block">
                 What problem or pain point are they facing?
               </Label>
               <Textarea
@@ -158,7 +158,7 @@ const ICPForm = () => {
             </div>
 
             <div>
-              <Label htmlFor="valueProposition" className="text-body-sm font-medium text-foreground mb-2 block">
+              <Label htmlFor="valueProposition" className="text-body-tiny-medium sm:text-body-sm font-medium text-foreground mb-2 block leading-relaxed">
                 What makes your product different or valuable to this audience?
               </Label>
               <Textarea
@@ -184,7 +184,7 @@ const ICPForm = () => {
         return (
           <div className="space-y-6">
             <div>
-              <Label htmlFor="currentSolution" className="text-body-sm font-medium text-foreground mb-2 block">
+              <Label htmlFor="currentSolution" className="text-body-tiny-medium sm:text-body-sm font-medium text-foreground mb-2 block leading-relaxed">
                 Anything else we should know before auditing? (Optional)
               </Label>
               <Textarea
@@ -208,8 +208,8 @@ const ICPForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4 sm:p-6">
-      <Card className="w-full max-w-2xl shadow-lg py-0">
+    <div className="min-h-screen bg-background flex items-center justify-center sm:p-6">
+      <Card className="w-full max-w-2xl shadow-lg py-0 m-6">
         <CardContent className="p-4 sm:p-6 lg:p-8">
           <div className="text-center mb-6 sm:mb-8">
             <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-2 font-sans leading-6 sm:leading-8 tracking-normal">

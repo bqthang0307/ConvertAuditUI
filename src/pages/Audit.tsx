@@ -98,18 +98,18 @@ const Audit = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <div className="flex items-center justify-center p-4 sm:p-6 sm:pt-32">
+      <div className="flex items-center justify-center pt-4 sm:p-6 sm:pt-32 m-4 sm:m-6">
         <Card className="w-full max-w-lg lg:max-w-2xl shadow-lg py-0">
           <CardContent className="p-4 sm:p-6 lg:p-8 pt-2">
             <div className="text-center pb-6 sm:pb-8">
-              <h1 className="text-lg sm:text-xl font-bold text-foreground mb-2 tracking-normal">
+              <h1 className="text-h6 sm:text-h5 font-bold text-foreground mb-2 tracking-normal">
                 Let's create an audit for your <br className="hidden sm:block" />SaaS landing page!
               </h1>
             </div>
 
             <div className="space-y-6">
               <div>
-                <Label htmlFor="email" className="text-sm font-medium text-foreground mb-2 block">
+                <Label htmlFor="email" className="text-body-tiny-medium sm:text-sm font-medium text-foreground mb-2 block">
                   Email
                 </Label>
                 <Input
@@ -124,14 +124,14 @@ const Audit = () => {
                 {errors.email && (
                   <p className="text-sm text-destructive mt-1">{errors.email}</p>
                 )}
-                <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+                <div className="flex items-center gap-2 mt-2 text-body-tiny-medium sm:text-xs text-muted-foreground">
                   <Info className="w-3 h-3" />
                   <span>Helps us send you a magic link and a PDF export.</span>
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="landingPageUrl" className="text-sm font-medium text-foreground mb-2 block">
+                <Label htmlFor="landingPageUrl" className="text-body-tiny-medium sm:text-sm font-medium text-foreground mb-2 block">
                   Landing page URL
                 </Label>
                 <Input
