@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChevronDown, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 // import { useTheme } from "next-themes";
 import logo from "@/assets/logo.png";
 import addCircle from "@/assets/Icon/add-circle.svg";
@@ -11,13 +12,45 @@ const Header = () => {
   // const { theme, setTheme } = useTheme();
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Show header when scrolling up or at the top
+      if (currentScrollY < lastScrollY || currentScrollY < 10) {
+        setIsHeaderVisible(true);
+      } 
+      // Hide header when scrolling down (but not at the very top)
+      else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsHeaderVisible(false);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    // Add padding to body to account for fixed header
+    document.body.style.paddingTop = '80px';
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      // Clean up body padding
+      document.body.style.paddingTop = '0px';
+    };
+  }, [lastScrollY]);
+
   return (
-    <header className="flex items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-25 py-3 bg-card border-b border-border">
+    <header className={`fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-25 py-3 bg-card border-b border-border transition-transform duration-300 ease-in-out ${
+      isHeaderVisible ? 'translate-y-0' : '-translate-y-full'
+    }`}>
       <div className="flex items-center gap-2">
         <a href={baseUrl}>
           <img 
@@ -73,10 +106,10 @@ const Header = () => {
         </Button>
       </div>
 
-      {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
-          <div className="fixed inset-0 bg-black/20" onClick={toggleMobileMenu} />
+      {/* Mobile Menu Overlay - Portal to body so it's not clipped/transparent */}
+      {isMobileMenuOpen && createPortal(
+        <div className="fixed inset-0 z-[100] md:hidden">
+          <div className="fixed inset-0 bg-black/40" onClick={toggleMobileMenu} />
           <div className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-card border-l border-border shadow-lg">
             <div className="flex items-center justify-between p-4 border-b border-border">
               <h2 className="text-lg font-semibold">Menu</h2>
@@ -127,7 +160,8 @@ const Header = () => {
               </div>
             </nav>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </header>
   );

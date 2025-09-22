@@ -33,7 +33,8 @@ const AuditReport = () => {
     if (!raw) return "";
     const withoutAt = raw.replace(/^@/, "");
     const withoutScheme = withoutAt.replace(/^https?:\/\//i, "");
-    return withoutScheme;
+    const withoutTrailingSlash = withoutScheme.replace(/\/+$/, "");
+    return withoutTrailingSlash;
   };
 
   const scrollToSection = (sectionId: string) => {
@@ -47,15 +48,21 @@ const AuditReport = () => {
   // Fetch audit by jobId from URL, prefer server over navigation state
   useEffect(() => {
     const jobId = searchParams.get('jobId');
+    const backendSignature = searchParams.get('sig');
     if (!jobId) {
       setError('Missing jobId in URL');
+      setLoading(false);
+      return;
+    }
+    if (!backendSignature) {
+      setError('Missing signature in URL');
       setLoading(false);
       return;
     }
     (async () => {
       try {
         setLoading(true);
-        const response = await auditService.getAudit(jobId);
+        const response = await auditService.getAudit(jobId, backendSignature);
         // Accept either { data: ... } or raw object
         const auditsInformation = (response as any)?.data ?? response;
         setAuditData(auditsInformation);
@@ -624,7 +631,7 @@ const AuditReport = () => {
         </div>
 
         {/* Score Breakdown */}
-        <div data-section="score-breakdown" className="flex flex-col sm:flex-row sm:justify-center sm:items-center space-x-auto mb-8 sm:mb-12 mx-2">
+        <div data-section="score-breakdown" className="flex flex-col sm:flex-row sm:justify-center sm:items-center gap-4 sm:gap-20 lg:gap-33.5 mb-8 sm:mb-12 mx-2 lg:mx-0">
           <CircularProgress value={Math.round(transformedData.Clarity?.weighted_score || 0)} label="Clarity" />
           <CircularProgress value={Math.round(transformedData.Trust?.weighted_score || 0)} label="Trust" />
           <CircularProgress value={Math.round(transformedData.Conversion?.weighted_score || 0)} label="Conversion" />

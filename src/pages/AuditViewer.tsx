@@ -5,11 +5,13 @@ import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import CircularProgress from "@/components/CircularProgress";
 import { Button } from "@/components/ui/button";
+import { auditService } from "@/services/auditService";
 
 export default function AuditViewer() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [jobId, setJobId] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // Get jobId from URL parameters
@@ -21,6 +23,14 @@ export default function AuditViewer() {
     } else {
       setError('No job ID provided in URL parameters');
     }
+
+    const email = searchParams.get('email');
+    if (email) {
+      setEmail(email);
+      setError(null);
+    } else {
+      setError('No job email provided in URL parameters');
+    }
   }, [searchParams]);
 
   // e.g., set jobId after BE returns it from POST /api/audits
@@ -31,7 +41,33 @@ export default function AuditViewer() {
   // Navigate to audit-report when audit is completed (fetch happens in AuditReport)
   useEffect(() => {
     if (latest && latest.type === 'completed') {
-      navigate(`/audit-report?jobId=${jobId}`);
+      // Include the result context in the navigation URL
+      const resultContext = latest.result ? latest.result : '';
+      console.log('resultContext:', resultContext);
+      
+      // Extract the auditResultSig from the result
+      let auditResultSig = '';
+      try {
+        // Handle both object and string cases
+        const parsedResult = typeof resultContext === 'string' 
+          ? JSON.parse(resultContext) 
+          : resultContext;
+        
+        if (parsedResult && typeof parsedResult === 'object' && 'auditResultSig' in parsedResult) {
+          auditResultSig = parsedResult.auditResultSig;
+        }
+      } catch (error) {
+        console.error('Error parsing result context:', error);
+      }
+      if (email && auditResultSig) {
+        const reportUrl = `${window.location.origin}/audit-report?jobId=${jobId}&sig=${auditResultSig}`;
+        // console.log(`reportUrl:${reportUrl}`)
+        // console.log(`auditResultSig for email:${auditResultSig}`)
+        auditService.emailsender(email, reportUrl);
+      } else {
+        console.log('Missing email or auditResultSig:', { email, auditResultSig });
+      }
+      navigate(`/audit-report?jobId=${jobId}&sig=${auditResultSig}`);
     }
   }, [latest, jobId, navigate]);
 
@@ -77,7 +113,7 @@ export default function AuditViewer() {
            </div>
          </div>
        )}
-      <div className="p-6 pt-32">
+      {/* <div className="p-6 pt-32">
         <div className="max-w-4xl mx-auto">
           <div className="mb-6">
             <div className="flex items-center justify-between">
@@ -99,29 +135,29 @@ export default function AuditViewer() {
             </div>
           </div>
           
-          <div className="space-y-4">
+          <div className="space-y-4"> */}
       {/* Job ID Display */}
-      <div className="space-y-2">
+      {/* <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700">
           Job ID
         </label>
         <div className="w-full border border-gray-300 rounded-md px-3 py-2 bg-gray-50 text-gray-700">
           {jobId || "Loading..."}
         </div>
-      </div>
+      </div> */}
 
       {/* Error Display */}
-      {error && (
+      {/* {error && (
         <div className="bg-red-50 border border-red-200 rounded-md p-3">
           <div className="text-sm font-medium text-red-800 mb-1">Error</div>
           <div className="text-sm text-red-700">{error}</div>
         </div>
-      )}
+      )} */}
 
-      {jobId && (
-        <div className="space-y-3">
+      {/* {jobId && (
+        <div className="space-y-3"> */}
           {/* Connection Status */}
-          <div className={`rounded-md p-3 ${
+          {/* <div className={`rounded-md p-3 ${
             connectionStatus === 'connected' ? 'bg-green-50 border border-green-200' :
             connectionStatus === 'connecting' ? 'bg-yellow-50 border border-yellow-200' :
             connectionStatus === 'error' ? 'bg-red-50 border border-red-200' :
@@ -183,17 +219,17 @@ export default function AuditViewer() {
               </div>
             </div>
           )}
-        </div>
-      )}
+        </div> */
+      /* )} */}
 
-      {!jobId && !error && (
+      {/* {!jobId && !error && (
         <div className="text-center text-gray-500 py-8">
           Loading job ID from URL parameters...
         </div>
       )}
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

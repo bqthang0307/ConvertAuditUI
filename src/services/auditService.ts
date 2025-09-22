@@ -15,7 +15,11 @@ export const auditService = {
     return apiClient.post('/api/audits', data);
   },
   
-  async getAudit(id: string) {
-    return apiClient.get(`/api/audits/${id}`);
+  async getAudit(id: string, backendSignature: string) {
+    return apiClient.get(`/api/audits/${id}?sig=${backendSignature}`);
+  },
+
+  async emailsender(email: string, audit_url: string) {
+    return apiClient.get(`/api/audits/email?email=${email}&audit_url=${encodeURIComponent(audit_url)}`);
   }
 };

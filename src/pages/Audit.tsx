@@ -86,7 +86,7 @@ const Audit = () => {
         // Submit audit request only
         const auditResult = await submitAudit(auditPayload);
         console.log('Audit request successful:', auditResult);  
-        navigate(`/audit-viewer?jobId=${auditResult.data}`);
+        navigate(`/audit-viewer?jobId=${auditResult.data}&email=${formData.email}`);
         // Handle success - you might want to show a success message or redirect
       } catch (error) {
         console.error('Error submitting audit request:', error);
@@ -99,7 +99,7 @@ const Audit = () => {
     <div className="min-h-screen bg-background">
       <Header />
       <div className="flex items-center justify-center pt-4 sm:p-6 sm:pt-32 m-4 sm:m-6">
-        <Card className="w-full max-w-lg lg:max-w-2xl shadow-lg py-0">
+        <Card className="w-full max-w-lg lg:max-w-2xl shadow-lg py-0 m-0">
           <CardContent className="p-4 sm:p-6 lg:p-8 pt-2">
             <div className="text-center pb-6 sm:pb-8">
               <h1 className="text-h6 sm:text-h5 font-bold text-foreground mb-2 tracking-normal">

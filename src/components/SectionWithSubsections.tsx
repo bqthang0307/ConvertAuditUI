@@ -110,7 +110,7 @@ const SectionWithSubsections = ({
 
   return (
     <section id={id}>
-      <Card className="mt-0 mb-8 sm:mb-10 rounded-2xl gap-6 sm:gap-10 ml-0 sm:ml-5 mr-0">
+      <Card className="mt-0 mb-8 sm:mb-10 rounded-2xl gap-6 sm:gap-10 ml-0 sm:ml-5 mr-0 sm:py-8">
         <CardHeader className="pb-0 gap-0">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
             <div className={`relative ${mainSize.container}`}>
@@ -194,7 +194,7 @@ const SectionWithSubsections = ({
                       <h5 className="mb-2 flex items-center text-menu sm:text-title-18 text-dark-bg-300">
                         What's working well:
                       </h5>
-                      <ul className="text-body-sm sm:text-body-lg text-dark-bg-300 space-y-1 ml-4 list-disc list-outside marker:text-lg">
+                      <ul className="text-body-sm sm:text-body-lg text-dark-bg-300 space-y-1 ml-8 list-disc list-outside marker:text-lg">
                         {subsection.workingWell.map((item, index) => (
                           <li key={index}>{item}</li>
                         ))}
@@ -207,7 +207,7 @@ const SectionWithSubsections = ({
                       <h5 className="mb-2 flex items-center text-menu sm:text-title-18 text-dark-bg-300">
                         What's missing:
                       </h5>
-                      <ul className="text-body-sm sm:text-body-lg text-dark-bg-300 space-y-1 ml-4 list-disc list-outside marker:text-lg">
+                      <ul className="text-body-sm sm:text-body-lg text-dark-bg-300 space-y-1 ml-8 list-disc list-outside marker:text-lg">
                         {subsection.missing.map((item, index) => (
                           <li key={index}>{item}</li>
                         ))}
@@ -216,12 +216,12 @@ const SectionWithSubsections = ({
                   )}
 
                   {subsection.recommendations && subsection.recommendations.length > 0 && (
-                    <div className="bg-excellent-50 border border-excellent-900/10 rounded-lg p-4 mb-10">
+                    <div className="bg-excellent-50 border border-excellent-900/10 rounded-lg p-4 mb-0">
                       <h5 className="text-title-18 sm:text-h6 mb-2 flex items-center gap-2 text-dark-bg">
                       <img src={tickIcon} className="w-6 h-6 border-dark-bg"/>
                         Recommendation
                       </h5>
-                      <ul className="text-body-sm sm:text-body-lg text-dark-bg-300 space-y-1 ml-4 list-disc list-outside marker:text-lg">
+                      <ul className="text-body-sm sm:text-body-lg text-dark-bg-300 space-y-1 ml-8 list-disc list-outside marker:text-lg">
                         {subsection.recommendations.map((item, index) => (
                           <li key={index}>{item}</li>
                         ))}
