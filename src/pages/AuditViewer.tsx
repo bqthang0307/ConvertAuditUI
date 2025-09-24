@@ -4,14 +4,11 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import CircularProgress from "@/components/CircularProgress";
-import { Button } from "@/components/ui/button";
-import { auditService } from "@/services/auditService";
 
 export default function AuditViewer() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [jobId, setJobId] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // Get jobId from URL parameters
@@ -22,14 +19,6 @@ export default function AuditViewer() {
       setError(null);
     } else {
       setError('No job ID provided in URL parameters');
-    }
-
-    const email = searchParams.get('email');
-    if (email) {
-      setEmail(email);
-      setError(null);
-    } else {
-      setError('No job email provided in URL parameters');
     }
   }, [searchParams]);
 
@@ -44,29 +33,29 @@ export default function AuditViewer() {
       // Include the result context in the navigation URL
       const resultContext = latest.result ? latest.result : '';
       console.log('resultContext:', resultContext);
-      
+
       // Extract the auditResultSig from the result
       let auditResultSig = '';
       try {
         // Handle both object and string cases
-        const parsedResult = typeof resultContext === 'string' 
-          ? JSON.parse(resultContext) 
+        const parsedResult = typeof resultContext === 'string'
+          ? JSON.parse(resultContext)
           : resultContext;
-        
+
         if (parsedResult && typeof parsedResult === 'object' && 'auditResultSig' in parsedResult) {
           auditResultSig = parsedResult.auditResultSig;
         }
       } catch (error) {
         console.error('Error parsing result context:', error);
       }
-      if (email && auditResultSig) {
-        const reportUrl = `${window.location.origin}/audit-report?jobId=${jobId}&sig=${auditResultSig}`;
-        // console.log(`reportUrl:${reportUrl}`)
-        // console.log(`auditResultSig for email:${auditResultSig}`)
-        auditService.emailsender(email, reportUrl);
-      } else {
-        console.log('Missing email or auditResultSig:', { email, auditResultSig });
-      }
+      // if (email && auditResultSig) {
+      //   const reportUrl = `${window.location.origin}/audit-report?jobId=${jobId}&sig=${auditResultSig}`;
+      //   // console.log(`reportUrl:${reportUrl}`)
+      //   // console.log(`auditResultSig for email:${auditResultSig}`)
+      //   auditService.emailsender(email, reportUrl);
+      // } else {
+      //   console.log('Missing email or auditResultSig:', { email, auditResultSig });
+      // }
       navigate(`/audit-report?jobId=${jobId}&sig=${auditResultSig}`);
     }
   }, [latest, jobId, navigate]);
@@ -103,16 +92,22 @@ export default function AuditViewer() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-       {jobId && (        
-         <div className="flex justify-center py-8">
-           <div className="border border-gray-200 rounded-lg p-6 px-20 bg-white shadow-sm">
-             <CircularProgress 
-               value={getProgress()} 
-               label={getProgressLabel()} 
-             />
-           </div>
-         </div>
-       )}
+      {jobId && (
+        <div className="flex justify-center py-8">
+          <div className="border border-gray-200 rounded-lg p-6 px-6 sm:px-12.5 bg-white shadow-2xl w-83 sm:w-xl flex flex-col items-center text-center gap-6 sm:gap-8">
+            <span className="text-h6 sm:text-h5 text-dark-bg">Auditing your website</span>
+            <CircularProgress
+              value={getProgress()}
+              label={getProgressLabel()}
+              isPrimaryColor={true}
+            />
+            <span className="text-dark-bg text-title-18 text-menu">
+              "In just a moment, your personalized audit will be ready.
+               You'll also receive a secure magic link in your email to revisit anytime."
+            </span>
+          </div>
+        </div>
+      )}
       {/* <div className="p-6 pt-32">
         <div className="max-w-4xl mx-auto">
           <div className="mb-6">
@@ -156,8 +151,8 @@ export default function AuditViewer() {
 
       {/* {jobId && (
         <div className="space-y-3"> */}
-          {/* Connection Status */}
-          {/* <div className={`rounded-md p-3 ${
+      {/* Connection Status */}
+      {/* <div className={`rounded-md p-3 ${
             connectionStatus === 'connected' ? 'bg-green-50 border border-green-200' :
             connectionStatus === 'connecting' ? 'bg-yellow-50 border border-yellow-200' :
             connectionStatus === 'error' ? 'bg-red-50 border border-red-200' :

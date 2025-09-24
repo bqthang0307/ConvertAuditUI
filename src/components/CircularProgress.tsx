@@ -1,12 +1,18 @@
 interface CircularProgressProps {
   value: number;
   label: string;
+  isPrimaryColor?: boolean;
 }
 
-const CircularProgress = ({ value, label }: CircularProgressProps) => {
+const CircularProgress = ({ value, label, isPrimaryColor }: CircularProgressProps) => {
   // Determine color and title based on value
   const getScoreInfo = (score: number) => {
-    if (score >= 85) {
+    if (isPrimaryColor) {
+      return {
+        color: "var(--color-primary)",
+        title: "You Are Close to Conversion Ready"
+      };
+    }else if (score >= 85) {
       return {
         color: "var(--color-excellent)",
         title: "You Are Close to Conversion Ready"

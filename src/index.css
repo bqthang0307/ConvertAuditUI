@@ -15,6 +15,7 @@
   --color-primary-foreground: hsl(0 0% 100%);
   --color-primary-50: hsla(224, 100%, 96%, 1);
   --color-primary-100: hsla(224, 97%, 87%, 1);
+  --color-primary-300: hsla(223, 97%, 71%, 1);
   --color-primary-900: hsl(223 74% 24%);
   --color-primary-CTA: hsla(223, 98%, 57%, 1);
 

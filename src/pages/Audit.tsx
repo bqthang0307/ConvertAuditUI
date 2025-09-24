@@ -85,8 +85,8 @@ const Audit = () => {
 
         // Submit audit request only
         const auditResult = await submitAudit(auditPayload);
-        console.log('Audit request successful:', auditResult);  
-        navigate(`/audit-viewer?jobId=${auditResult.data}&email=${formData.email}`);
+        // console.log('Audit request successful:', auditResult);  
+        navigate(`/audit-viewer?jobId=${auditResult.data}`);
         // Handle success - you might want to show a success message or redirect
       } catch (error) {
         console.error('Error submitting audit request:', error);

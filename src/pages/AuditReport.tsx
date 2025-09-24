@@ -65,6 +65,7 @@ const AuditReport = () => {
         const response = await auditService.getAudit(jobId, backendSignature);
         // Accept either { data: ... } or raw object
         const auditsInformation = (response as any)?.data ?? response;
+        console.log(response);
         setAuditData(auditsInformation);
         setError(null);
       } catch (e) {
