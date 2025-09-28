@@ -94,16 +94,16 @@ export default function AuditViewer() {
       <Header />
       {jobId && (
         <div className="flex justify-center py-8">
-          <div className="border border-gray-200 rounded-lg p-6 px-6 sm:px-12.5 bg-white shadow-2xl w-83 sm:w-xl flex flex-col items-center text-center gap-6 sm:gap-8">
+          <div className="border border-gray-200 rounded-2xl p-6 px-6 sm:px-10 bg-white shadow-2xl w-83 sm:w-125 flex flex-col items-center text-center gap-3 sm:gap-5">
             <span className="text-h6 sm:text-h5 text-dark-bg">Auditing your website</span>
             <CircularProgress
               value={getProgress()}
-              label={getProgressLabel()}
+              label=""
               isPrimaryColor={true}
             />
-            <span className="text-dark-bg text-title-18 text-menu">
-              "In just a moment, your personalized audit will be ready.
-               You'll also receive a secure magic link in your email to revisit anytime."
+            <span className="text-base font-semibold sm:text-lg sm:font-semibold text-center text-dark-bg">
+              In just a moment, your personalized audit will be ready.
+               You'll also receive a secure magic link in your email to revisit anytime.
             </span>
           </div>
         </div>

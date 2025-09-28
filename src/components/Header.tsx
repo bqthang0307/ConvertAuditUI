@@ -202,30 +202,30 @@ const Header = () => {
 
       {/* Alert - slides down on Create New */}
       {renderAlert && (
-        <div className="fixed inset-x-0 top-0 z-[200] pointer-events-none">
+        <div className="fixed inset-x-0 top-8 z-[200] pointer-events-none">
           <div
             role="alert"
-            className={`relative mx-auto max-w-3xl p-4 mb-4 rounded-lg shadow-sm border
+            className={`relative mx-auto max-w-85.5 sm:max-w-162.5 p-4 mb-4 rounded-lg shadow-lg border
                   bg-accent-foreground border-blue-300
                   transform transition-transform duration-200
-                  ease-out will-change-transform pointer-events-auto
+                  ease-out will-change-transform pointer-events-auto 
                   ${isAnimating ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}`}
           >
             {/* Close button (top-right) */}
             <button
               onClick={handleCloseNotification}
               aria-label="Close alert"
-              className="absolute top-2 right-2 rounded p-1 text-blue-800 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-200"
+              className="absolute top-2 right-2 rounded p-1 text-dark-bg hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-200"
             >
               <X className="w-4 h-4" />
             </button>
 
             {/* Content */}
-            <div className="flex items-start">
-              <img src={notificationBing} alt="notification-bing" className="w-6 h-6 align-middle" />
-              <div className="text-sm pl-2">
+            <div className="flex items-start gap-2">
+              <img src={notificationBing} alt="notification-bing" className="w-6 h-6 flex-shrink-0" />
+              <div className="text-sm">
                 <h3 className="text-menu text-dark-bg">MVP Limit</h3>
-                <p className="text-body-sm text-dark-bg-300">We’re currently testing ConvertAudit in our MVP stage. To ensure quality and fairness, each email can request 1 free audit per month.</p>
+                <p className="text-body-sm text-dark-bg-300 pr-6 sm:pr-8">We're currently testing ConvertAudit in our MVP stage. To ensure quality and fairness, each email can request 1 free audit per month.</p>
               </div>
             </div>
           </div>

@@ -44,7 +44,7 @@ const CircularProgress = ({ value, label, isPrimaryColor }: CircularProgressProp
   const progressColor = scoreInfo.color;
 
   return (
-    <div className="flex flex-col items-center space-y-3">
+    <div className="flex flex-col items-center">
       <div className="relative w-46 h-46">
         <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
           <circle
