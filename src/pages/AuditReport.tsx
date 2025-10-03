@@ -8,6 +8,13 @@ import CircularProgress from "@/components/CircularProgress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { auditService } from "@/services/auditService";
+import ctaBoostma from "@/assets/CTAImages/Boostma.png";
+import ctaEmbraceRedesign from "@/assets/CTAImages/Embrace Redesign 1.png";
+import ctaFinlab from "@/assets/CTAImages/Finlab.png";
+import ctaFitbite from "@/assets/CTAImages/Fitbite.png";
+import ctaNumerousRedesign from "@/assets/CTAImages/Numerous redesign 1.png";
+import ctaVeraRedesign from "@/assets/CTAImages/veratad redesign.png";
+import { Button } from "@/components/ui/button";
 
 const AuditReport = () => {
   const [activeSection, setActiveSection] = useState("clarity");
@@ -85,7 +92,7 @@ const AuditReport = () => {
         // Show mobile nav when score breakdown is scrolled past (bottom of element is above viewport)
         const shouldShow = rect.bottom < 0;
         setShowMobileNav(shouldShow);
-        
+
         // Close mobile menu if user scrolls back up past score breakdown
         if (!shouldShow && isMobileMenuOpen) {
           setIsMobileMenuOpen(false);
@@ -875,7 +882,7 @@ const AuditReport = () => {
         {/* Priority Recommendations */}
         <div className="mt-12 sm:mt-16">
           <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-6 sm:mb-8">Priority Recommendations</h2>
-          
+
           {/* Desktop Table */}
           <div className="hidden sm:block border border-border rounded-lg overflow-hidden">
             <div className="overflow-x-auto">
@@ -919,6 +926,35 @@ const AuditReport = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+        {/* CTA */}
+        <div className="mt-24 relative py-20 overflow-hidden w-full min-h-148 h-full border border-dark-bg-50 rounded-2xl flex items-center justify-center bg-light-bg-100">
+          {/* Floating Images */}
+          <img src={ctaEmbraceRedesign} alt="Dashboard mockup" className="absolute -top-3.75 -left-8.5 md:top-9.5 md:-left-10.5 xl:top-20 xl:left-28 w-36 h-28 rounded-lg shadow-2xl transform rotate-12 sm:rotate-11 hover:scale-110 transition-transform duration-300" />
+          <img src={ctaBoostma} alt="Growth statistics" className="absolute -top-99 -left-99 md:top-4.5 md:left-84 xl:top-10 xl:left-110 w-39 h-22.5 rounded-lg shadow-2xl transform -rotate-7 hover:scale-110 transition-transform duration-300" />
+          <img src={ctaFinlab} alt="Mobile app interface" className="absolute top-1.75 left-56 md:top-17 md:left-7/8 xl:top-12.5 xl:left-9/12 w-32 h-26.5 rounded-lg shadow-2xl block border-0 outline-none -rotate-14 sm:rotate-[17.43deg] hover:scale-110 transition-transform duration-300" />
+          <img src={ctaNumerousRedesign} alt="AI interface" className="absolute top-120 -left-8.5 md:top-127 md:left-6.5 xl:top-92.5 xl:left-35 w-39.25 h-42 rounded-lg shadow-2xl block border-0 outline-none -rotate-[11deg] hover:scale-110 transition-transform duration-300" />
+          <img src={ctaVeraRedesign} alt="E-commerce website" className="absolute z-5 top-129 left-25 md:top-127 md:left-84 xl:top-128 xl:left-169 w-35 h-21 rounded-lg shadow-2xl block border-0 outline-none rotate-7 sm:-rotate-[10.17deg] hover:scale-110 transition-transform duration-300" />
+          <img src={ctaFitbite} alt="Analytics dashboard" className="absolute top-119 left-52 sm:left-3/4 md:top-136 md:left-6/8 xl:top-85 xl:left-246 w-39 h-35.25 rounded-lg shadow-2xl block border-0 outline-none rotate-[12.45deg] hover:scale-110 transition-transform duration-300" />
+
+          {/* CTA Content */}
+          <div className="relative z-10 text-center max-w-150 mx-auto px-4">
+            <h2 className="text-dark-bg text-h5-sm-h3 mb-4 sm:mb-6 text-center pointer-events-none cursor-not-allowed">
+              Turn your audit insights into{" "}
+              <span className="text-gradient-primary">real conversions</span>
+            </h2>
+            <p className="text-body-sm-sm-menu text-dark-bg-300 mb-4 sm:mb-6 max-w-113 mx-auto pointer-events-none cursor-not-allowed">
+              Upgrade from insights to execution. ConvertUp handles copy, design and launch so you can focus on growth.
+            </p>
+            <Button
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6 hover:cursor-pointer hover:scale-110 transition-transform duration-300"
+              variant={"gradient"}
+              onClick={() => window.open("https://convertup.design/", "_blank")}
+            >
+              Boost my conversions now
+            </Button>
           </div>
         </div>
       </div>

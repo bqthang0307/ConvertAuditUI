@@ -3,14 +3,11 @@
 /* Design system — all colors in HSL, plus radius token */
 @theme {
   --color-background: hsl(0 0% 100%);
-  --color-foreground: hsl(212 47% 23%); /* #DarkBG in figma*/
-
+  --color-foreground: hsl(212 47% 23%);
   --color-card: hsl(0 0% 100%);
   --color-card-foreground: hsl(222.2 84% 4.9%);
-
   --color-popover: hsl(0 0% 100%);
   --color-popover-foreground: hsl(222.2 84% 4.9%);
-
   --color-primary: hsl(224 76% 48%);
   --color-primary-foreground: hsl(0 0% 100%);
   --color-primary-50: hsla(224, 100%, 96%, 1);
@@ -18,31 +15,23 @@
   --color-primary-300: hsla(223, 97%, 71%, 1);
   --color-primary-900: hsl(223 74% 24%);
   --color-primary-CTA: hsla(223, 98%, 57%, 1);
-
   --color-secondary: hsl(210 40% 96.1%);
   --color-secondary-foreground: hsl(222.2 47.4% 11.2%);
-
   --color-muted: hsl(210 40% 96.1%);
   --color-muted-foreground: hsl(215.4 16.3% 46.9%);
-
   --color-accent: hsl(120 100% 45%);
   --color-accent-foreground: hsl(0 0% 100%);
-
   --color-destructive: hsl(0 84.2% 60.2%);
   --color-destructive-foreground: hsl(210 40% 100%);
-
   --color-border: hsl(214.3 31.8% 91.4%);
   --color-input: hsl(214.3 31.8% 91.4%);
   --color-ring: hsl(224 76% 48%);
-
   --color-success: hsl(120 100% 45%);
   --color-warning: hsl(45 100% 51%);
   --color-info: hsl(210 100% 56%);
   --color-danger-50: hsla(0, 79%, 95%, 1);
   --color-danger-500: hsla(0, 100%, 45%, 1);
-
   --radius: 0.5rem;
-
   --color-sidebar-background: hsl(0 0% 100%);
   --color-sidebar-foreground: hsl(240 5.3% 26.1%);
   --color-sidebar-primary: hsl(240 5.9% 10%);
@@ -51,42 +40,33 @@
   --color-sidebar-accent-foreground: hsl(240 5.9% 10%);
   --color-sidebar-border: hsl(220 13% 91%);
   --color-sidebar-ring: hsl(217.2 91.2% 59.8%);
-
   --color-excellent: hsla(82, 100%, 44%, 1);
   --color-excellent-50: hsla(82, 79%, 95%, 1);
   --color-excellent-500: hsla(82, 100%, 44%, 1);
   --color-excellent-600: hsla(82, 100%, 40%, 1);
   --color-excellent-800: hsla(82, 100%, 24%, 1);
   --color-excellent-900: hsla(82, 100%, 18%, 1);
-
   --color-good-50: hsla(53, 92%, 95%, 1);
   --color-good-600: hsla(52, 100%, 44%, 1);
-
   --color-warning-50: hsla(25, 92%, 95%, 1);
   --color-warning-600: hsla(26, 100%, 44%, 1);
-
   --color-needs-improvement: hsla(52, 100%, 48%, 1);
-
   --color-poor: hsla(26, 100%, 48%, 1);
-
   --color-dark-bg: hsla(212, 47%, 23%, 1);
   --color-dark-bg-50: hsla(216, 13%, 92%, 1);
   --color-dark-bg-300: hsla(212, 15%, 48%, 1);
   --color-dark-bg-900: hsla(211, 47%, 10%, 1);
-
+  --color-light-bg-100: hsla(210, 40%, 98%, 1);
   --color-light-bg-200: hsla(232, 52%, 94%, 1);
   --color-light-bg-400: hsla(222, 42%, 95%, 1);
-
   --gradient-primary: linear-gradient(180deg, #2762FC 0%, #86A9FE 126.29%);
 }
 
-/* Custom button gradient */
 .btn-gradient {
   background: var(--gradient-primary);
   color: white !important;
 }
 
-/* Base resets that lean on your tokens */
 @layer base {
   * {
     @apply border-border;
@@ -96,96 +76,114 @@
   }
 }
 
-/* Tip:
-   - Use `rounded-[--radius]` wherever you previously relied on `--radius`.
-   - Colors: bg-background, text-foreground, border-border, ring-ring, etc.
-   - Inputs: border-input, bg-input if you map fields to the input token. */
-
-/* Typography utilities matching Figma character styles */
 @layer utilities {
-  /* body/body large - 16 - Medium */
+  .text-gradient-primary {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
   .text-body-lg {
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-weight: 500; /* Medium */
+    font-weight: 500;
     font-style: normal;
     font-size: 16px;
-    line-height: 25px; /* 16px -> 25px */
-    letter-spacing: 0; /* 0% */
+    line-height: 25px;
+    letter-spacing: 0;
   }
+
   .text-body-sm {
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-weight: 500; /* Medium */
+    font-weight: 500;
     font-style: normal;
     font-size: 14px;
     line-height: 24px;
     letter-spacing: 0;
   }
+
   .text-body-tiny-medium {
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-weight: 500; /* Medium */
+    font-weight: 500;
     font-style: normal;
     font-size: 12px;
     line-height: 20px;
-    letter-spacing: 0; /* 0% */
+    letter-spacing: 0;
   }
+
   .text-body-tiny-semibold {
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-weight: 600; /* Medium */
+    font-weight: 600;
     font-style: normal;
     font-size: 12px;
-    line-height: 20px; 
-    letter-spacing: 0; /* 0% */
+    line-height: 20px;
+    letter-spacing: 0;
   }
+
   .text-title-18 {
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-weight: 600; /* Semi Bold */
+    font-weight: 600;
     font-style: normal;
     font-size: 18px;
     line-height: 26px;
-    paragraph-spacing: 24px;
     letter-spacing: 0;
-    text-align: center;
   }
+
   .text-h6 {
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-weight: 700; /* Bold */
+    font-weight: 700;
     font-size: 20px;
     line-height: 28px;
     letter-spacing: 0;
-    text-align: center;
   }
+
   .text-h5 {
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-weight: 700; /* Bold */
+    font-weight: 700;
     font-size: 24px;
     line-height: 32px;
     letter-spacing: 0;
   }
+
   .text-h4 {
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-weight: 700; /* Bold */
+    font-weight: 700;
     font-size: 32px;
     line-height: 41px;
     letter-spacing: 0;
   }
+
   .text-h3 {
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-weight: 700; /* Bold */
+    font-weight: 700;
     font-size: 40px;
     line-height: 48px;
     letter-spacing: 0;
   }
+
   .text-menu {
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-weight: 600; /* Semi Bold */
+    font-weight: 600;
     font-size: 16px;
     line-height: 25px;
-    paragraph-spacing: 10px;
-    list-spacing:5px;
+    letter-spacing: 0;
+  }
+  .text-h5-sm-h3 {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans";
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: 0;
+  }
+  .text-body-sm-sm-menu {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-weight: 500;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 24px;
     letter-spacing: 0;
   }
 
-  /* Responsive typography utilities */
   .text-responsive-h1 {
     font-size: 1.5rem;
     line-height: 2rem;
@@ -228,6 +226,17 @@
     .text-responsive-body {
       font-size: 1rem;
       line-height: 1.5rem;
+    }
+  }
+  @media (min-width: 640px) {
+    .text-h5-sm-h3 {
+      font-size: 40px;
+      line-height: 48px;
+    }
+    .text-body-sm-sm-menu{
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 25px;
     }
   }
 }

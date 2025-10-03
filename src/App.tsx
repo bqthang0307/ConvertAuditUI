@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import Audit from "./pages/Audit";
 import AuditReport from "./pages/AuditReport";
 import AuditViewer from "./pages/AuditViewer";
+import History from "./pages/History";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="/audit-report" element={<AuditReport />} />
             <Route path="/audit-viewer" element={<AuditViewer />} />
+            <Route path="/history" element={<History />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

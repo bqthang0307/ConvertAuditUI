@@ -93,7 +93,7 @@ const Header = () => {
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-8 lg:gap-10">
         <div className="relative">
-          <a href="#" aria-disabled="true" className="text-primary-900 text-body-lg transition-colors opacity-50 pointer-events-none cursor-not-allowed">
+          <a href="/history" aria-disabled="true" className="text-primary-900 text-body-lg">
             History
           </a>
         </div>
@@ -156,11 +156,11 @@ const Header = () => {
               </Button>
             </div>
             <nav className="flex flex-col p-4 space-y-4">
-              <div className="relative pointer-events-none cursor-not-allowed">
+              <div className="relative ">
                 <a
                   href="#"
                   aria-disabled="true"
-                  className="text-primary-900 text-body-lg transition-colors py-2 opacity-50"
+                  className="text-primary-900 text-body-lg py-2"
                 >
                   History
                 </a>
