@@ -74,7 +74,6 @@ const AuditReport = () => {
       (async () => {
         try {
           const result = await getAuditHistory(BigInt(auditHistoryId), jobId, backendSignature);
-          console.log("result",result)
           setAuditData(result.data);
         } catch (e) {
           setError('Failed to fetch audit history');
