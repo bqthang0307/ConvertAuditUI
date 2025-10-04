@@ -24,7 +24,9 @@ class ApiClient {
         ? undefined
         : typeof rawBody === 'string'
           ? rawBody
-          : JSON.stringify(rawBody);
+          : headers['Content-Type'] === 'application/x-www-form-urlencoded'
+            ? new URLSearchParams(rawBody).toString()
+            : JSON.stringify(rawBody);
 
     return new Promise<any>((resolve, reject) => {
       $.ajax({
@@ -47,6 +49,9 @@ class ApiClient {
     return this.request(endpoint, {
       method: 'POST',
       body: data,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
     });
   }
 

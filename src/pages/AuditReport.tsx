@@ -15,6 +15,7 @@ import ctaFitbite from "@/assets/CTAImages/Fitbite.png";
 import ctaNumerousRedesign from "@/assets/CTAImages/Numerous redesign 1.png";
 import ctaVeraRedesign from "@/assets/CTAImages/veratad redesign.png";
 import { Button } from "@/components/ui/button";
+import { useAuditHistory } from "@/hooks/useAuditHistory";
 
 const AuditReport = () => {
   const [activeSection, setActiveSection] = useState("clarity");
@@ -25,6 +26,7 @@ const AuditReport = () => {
   const [error, setError] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showMobileNav, setShowMobileNav] = useState(false);
+  const { getAuditHistory } = useAuditHistory();
 
   const formatDate = (isoString?: string) => {
     if (!isoString) return "";
@@ -66,18 +68,36 @@ const AuditReport = () => {
       setLoading(false);
       return;
     }
+    //if url include audit-history-id, fetch audit history
+    const auditHistoryId = searchParams.get('audit-history-id');
+    if (auditHistoryId) {
+      (async () => {
+        try {
+          const result = await getAuditHistory(BigInt(auditHistoryId), jobId, backendSignature);
+          console.log("result",result)
+          setAuditData(result.data);
+        } catch (e) {
+          setError('Failed to fetch audit history');
+        } finally {
+          setLoading(false);
+        }
+      })();
+      return;
+    }
+    //else fetch audit
     (async () => {
       try {
         setLoading(true);
         const response = await auditService.getAudit(jobId, backendSignature);
         // Accept either { data: ... } or raw object
         const auditsInformation = (response as any)?.data ?? response;
-        console.log(response);
         setAuditData(auditsInformation);
         setError(null);
       } catch (e) {
         setError('Failed to fetch audit data');
       } finally {
+        localStorage.setItem('audit_id', jobId as string);
+        localStorage.setItem('backend_signature', backendSignature as string);
         setLoading(false);
       }
     })();
@@ -126,276 +146,10 @@ const AuditReport = () => {
     );
   }
 
-  // Use auditData directly since it's now a single object, not an array 
-  // || {
-  //   "Clarity": {
-  //     "summary": "Strong message but lacks clear ICP fit and ROI clarity",
-  //     "dream_outcome": {
-  //       "whatsWorking": [
-  //         "Headline promises conversion improvement",
-  //         "Subheadline hints at smart audit solution",
-  //         "Visuals preview audit dashboard",
-  //         "Testimonials highlight user satisfaction"
-  //       ],
-  //       "whatsMissing": [
-  //         "Target customer (SMBs) is not mentioned clearly in headline/subheadline",
-  //         "No quantified results or metrics are shown",
-  //         "Pain point of 'low trial-to-paid' not directly mentioned or solved",
-  //         "Faster onboarding as a unique differentiator is not emphasized"
-  //       ],
-  //       "recommendations": [
-  //         {
-  //           "action": "Include 'for SaaS SMBs' in the headline or subheadline",
-  //           "purpose": "Clarity",
-  //           "effort": "Easy",
-  //           "impact": "High"
-  //         },
-  //         {
-  //           "action": "Add a clear before-after comparison for conversion rates",
-  //           "purpose": "Trust",
-  //           "effort": "Medium",
-  //           "impact": "Medium"
-  //         },
-  //         {
-  //           "action": "Highlight 'low trial-to-paid' conversion issue in subheadline or body copy",
-  //           "purpose": "Clarity",
-  //           "effort": "Easy",
-  //           "impact": "High"
-  //         },
-  //         {
-  //           "action": "Emphasize 'faster onboarding' in a value prop section or visual",
-  //           "purpose": "Conversion",
-  //           "effort": "Medium",
-  //           "impact": "High"
-  //         }
-  //       ],
-  //       "score": 45
-  //     },
-  //     "time_&_effort": {
-  //       "whatsWorking": [
-  //         "3-step audit process clearly shown",
-  //         "Mentions automation and ready-to-use insights",
-  //         "Visual shows quick input and output structure"
-  //       ],
-  //       "whatsMissing": [
-  //         "No specific time to result mentioned (e.g., 'in 24 hours')",
-  //         "Setup time is not clearly stated",
-  //         "No comparison with manual audits or competing tools",
-  //         "Faster onboarding benefit not linked to process copy"
-  //       ],
-  //       "recommendations": [
-  //         {
-  //           "action": "Add line like 'Get your conversion report in under 30 minutes'",
-  //           "purpose": "Clarity",
-  //           "effort": "Easy",
-  //           "impact": "Medium"
-  //         },
-  //         {
-  //           "action": "Compare ConvertAudit setup speed to traditional audits",
-  //           "purpose": "Trust",
-  //           "effort": "Medium",
-  //           "impact": "Medium"
-  //         },
-  //         {
-  //           "action": "Mention 'zero learning curve' or 'onboard in under 10 mins' benefit",
-  //           "purpose": "Conversion",
-  //           "effort": "Easy",
-  //           "impact": "High"
-  //         }
-  //       ],
-  //       "score": 55
-  //     },
-  //     "weighted_score": 50
-  //   },
-  //   "Trust": {
-  //     "summary": "Good trust signals, but deeper SMB-focused proof can boost relevance.",
-  //     "reviews_&_social_proof": {
-  //       "whatsWorking": [
-  //         "Multiple testimonials are visible.",
-  //         "Photos, names, and 5-star ratings are included.",
-  //         "Mentions of product effectiveness are present."
-  //       ],
-  //       "whatsMissing": [
-  //         "Testimonials don’t clearly reflect SMB profile.",
-  //         "No direct mention of improving trial-to-paid conversion.",
-  //         "No case studies showing quantifiable before/after results."
-  //       ],
-  //       "recommendations": [
-  //         {
-  //           "action": "Add testimonials from small to mid-sized business customers.",
-  //           "purpose": "Trust",
-  //           "effort": "Medium",
-  //           "impact": "High"
-  //         },
-  //         {
-  //           "action": "Include specific mentions of how ConvertAudit improved trial-to-paid rates.",
-  //           "purpose": "Conversion",
-  //           "effort": "Medium",
-  //           "impact": "High"
-  //         },
-  //         {
-  //           "action": "Add at least one testimonial with before/after metrics.",
-  //           "purpose": "Clarity",
-  //           "effort": "Medium",
-  //           "impact": "High"
-  //         }
-  //       ],
-  //       "score": 60
-  //     },
-  //     "trust_badges_&_eputation": {
-  //       "whatsWorking": [
-  //         "Strong visual ratings in testimonials enhance credibility."
-  //       ],
-  //       "whatsMissing": [
-  //         "No trust badges, compliance logos, or press features.",
-  //         "No external credibility proof tied to faster onboarding benefit."
-  //       ],
-  //       "recommendations": [
-  //         {
-  //           "action": "Add recognized trust badges or software review site logos (e.g., G2, Capterra).",
-  //           "purpose": "Trust",
-  //           "effort": "Easy",
-  //           "impact": "Medium"
-  //         },
-  //         {
-  //           "action": "Include an award, press feature, or certification if available.",
-  //           "purpose": "Trust",
-  //           "effort": "Medium",
-  //           "impact": "High"
-  //         },
-  //         {
-  //           "action": "Highlight a stat or badge related to ‘faster onboarding’ benefit if possible.",
-  //           "purpose": "Conversion",
-  //           "effort": "Medium",
-  //           "impact": "High"
-  //         }
-  //       ],
-  //       "score": 20
-  //     },
-  //     "personality_&_face": {
-  //       "whatsWorking": [
-  //         "Photo and friendly introduction of the founder are included.",
-  //         "Founder quote provides a clear mission tone."
-  //       ],
-  //       "whatsMissing": [
-  //         "No team or culture visuals, missing a broader personal feel."
-  //       ],
-  //       "recommendations": [
-  //         {
-  //           "action": "Show more behind-the-scenes/team visuals to connect further with SMB founders.",
-  //           "purpose": "Trust",
-  //           "effort": "Medium",
-  //           "impact": "Medium"
-  //         },
-  //         {
-  //           "action": "Add a short personal anecdote from the founder tied to helping SMBs convert easier.",
-  //           "purpose": "Conversion",
-  //           "effort": "Medium",
-  //           "impact": "High"
-  //         }
-  //       ],
-  //       "score": 40
-  //     },
-  //     "emotional_back_story": {
-  //       "whatsWorking": [
-  //         "Story from the founder explains why the tool exists.",
-  //         "Mentions frustration solving conversion clarity problems."
-  //       ],
-  //       "whatsMissing": [
-  //         "No mention of SMBs or messaging directly tied to trial-to-paid upgrade challenges.",
-  //         "Emotional narrative could be stronger or more personal."
-  //       ],
-  //       "recommendations": [
-  //         {
-  //           "action": "Mention an example of helping an SMB overcome trial-to-paid friction.",
-  //           "purpose": "Conversion",
-  //           "effort": "Medium",
-  //           "impact": "High"
-  //         },
-  //         {
-  //           "action": "Deepen the founder’s story with a specific pain moment and outcome.",
-  //           "purpose": "Trust",
-  //           "effort": "Medium",
-  //           "impact": "Medium"
-  //         }
-  //       ],
-  //       "score": 35
-  //     },
-  //     "weighted_score": 38.75
-  //   },
-  //   "Conversion": {
-  //     "summary": "CTA is clear but lacks urgency and doesn't highlight fast results.",
-  //     "call_to_action": {
-  //       "whatsWorking": [
-  //         "CTA button copy 'Start free audit' is simple and action-driven.",
-  //         "CTA appears multiple times, including hero section and footer."
-  //       ],
-  //       "whatsMissing": [
-  //         "CTA does not emphasize benefit like faster onboarding or improved conversions.",
-  //         "No tailored language addressing SMBs or their trial-to-paid pain."
-  //       ],
-  //       "recommendations": [
-  //         {
-  //           "action": "Add benefit-driven wording like 'Start free audit and boost signups today'.",
-  //           "purpose": "Conversion",
-  //           "effort": "Easy",
-  //           "impact": "High"
-  //         },
-  //         {
-  //           "action": "Include phrasing that reflects ICP pain point like 'Fix trial-to-paid drop-off now'.",
-  //           "purpose": "Clarity",
-  //           "effort": "Easy",
-  //           "impact": "Medium"
-  //         },
-  //         {
-  //           "action": "Emphasize speed of seeing value in CTA (e.g., 'Get quick insights in minutes').",
-  //           "purpose": "Clarity",
-  //           "effort": "Easy",
-  //           "impact": "High"
-  //         }
-  //       ],
-  //       "score": 70
-  //     },
-  //     "incentive_to_take_action": {
-  //       "whatsWorking": [
-  //         "Free audit is clearly offered – low barrier to entry.",
-  //         "No mention of credit card needed implies low friction, though not stated."
-  //       ],
-  //       "whatsMissing": [
-  //         "No urgency or limited-time incentive presented.",
-  //         "No mention of refund policy or cancellation in case of paid upgrade.",
-  //         "No language reinforcing fast onboarding/value realization, despite being the core differentiator."
-  //       ],
-  //       "recommendations": [
-  //         {
-  //           "action": "Add line below CTA that reads 'Takes less than 5 minutes. No credit card needed.'",
-  //           "purpose": "Trust",
-  //           "effort": "Easy",
-  //           "impact": "Medium"
-  //         },
-  //         {
-  //           "action": "Include urgency like 'Only 20 free audits/week – grab yours now!'",
-  //           "purpose": "Conversion",
-  //           "effort": "Medium",
-  //           "impact": "High"
-  //         },
-  //         {
-  //           "action": "Emphasize speed with copy like 'See results in under 24 hours'.",
-  //           "purpose": "Clarity",
-  //           "effort": "Easy",
-  //           "impact": "High"
-  //         }
-  //       ],
-  //       "score": 55
-  //     },
-  //     "weighted_score": 63
-  //   },
-  //   "overall_score_estimate": 50.58,
-  //   "summary_comment": "ConvertAudit shows strong foundational messaging and solid conversion potential with a free CTA and user testimonials. However, it needs clearer focus on its ICP (SaaS SMBs), quantified results, and stronger urgency signals. Adding proof points and amplifying the unique faster onboarding benefit will significantly increase trust and drive action."
-  // };
   // Derive report payload flexibly: supports object or JSON string
   let rawPayload: any = (auditData as any)?.payloadJson ?? (typeof auditData === 'string' ? auditData : location.state?.auditData);
   if (typeof rawPayload === 'string') {
+    console.log("rawPayload",rawPayload)
     try {
       rawPayload = JSON.parse(rawPayload);
     } catch (_e) {
@@ -596,7 +350,7 @@ const AuditReport = () => {
           <div className="inline-flex items-center gap-1 text-menu sm:text-title-18
            text-dark-bg border border-dark-bg rounded px-2 py-1">
             <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
-            <span>{formatDate(auditData.createdAt)}</span>
+            <span>{formatDate(auditData.createdAt??auditData.changed_at)}</span>
           </div>
         </div>
 
